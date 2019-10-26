@@ -6,10 +6,11 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const expressHandlebars = require('express-handlebars');
+const session = require('express-session');
 
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
-const dbURL = process.env.MONGODB_URI || 'mongodb://heroku_nw5ls50r:f6a8ft3u6ir276kue23ida54iv@ds139768.mlab.com:39768/heroku_nw5ls50r';
+const dbURL = process.env.MONGODB_URI || 'mongodb://heroku_z2gmdp3v:u6ltej4aifqa13tvl26mc4epa7@ds139768.mlab.com:39768/heroku_z2gmdp3v';
 
 mongoose.connect(dbURL, (err) => {
   if (err) {
@@ -26,6 +27,13 @@ app.use(favicon(`${__dirname}/../hosted/img/favicon.png`));
 app.use(compression());
 app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(bodyParser.json());
+// Session Configuration
+app.use(session({
+  key: 'sessionid',
+  secret: 'Domo Arigato',
+  resave: true,
+  saveUninitialized: true,
+}));
 app.engine('handlebars', expressHandlebars({
   defaultLayout: 'main',
 }));
