@@ -13,7 +13,7 @@ const csrf = require('csurf');
 
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
-const dbURL = process.env.MONGODB_URI || 'mongodb://heroku_5fd3b88z:2su5jvofg73hf0ojjso7q8bqkd@ds241298.mlab.com:41298/heroku_5fd3b88z';
+const dbURL = process.env.MONGODB_URI || 'mongodb://heroku_cjsdxn2w:h2qbc48gognqek6kuat03a85ni@ds241278.mlab.com:41278/heroku_cjsdxn2w';
 
 mongoose.connect(dbURL, (err) => {
   if (err) {
