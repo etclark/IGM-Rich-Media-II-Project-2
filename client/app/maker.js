@@ -11,11 +11,19 @@ const handleDomo = (e) => {
     return false;
 };
 
+const deleteDomo = (e) => {
+    e.preventDefault();
+    sendAjax('POST', '/deleteDomo', function() {
+        loadDomosFromServer();
+    });
+    return false;
+};
+
 const DomoForm = (props) => {
     return (
         <form id="domoForm"
         name="domoForm"
-        onSubmit = {handleDomo}
+        onSubmit = {deleteDomo}
         action="/maker"
         method="POST"
         className="domoForm"
@@ -24,6 +32,8 @@ const DomoForm = (props) => {
         <input id="domoName" type="text" name="name" placeholder="Domo Name"/>
         <label htmlFor="age">Age: </label>     
         <input id="domoAge" type="text" name="age" placeholder="Domo Age"/> 
+        <label htmlFor="price">Price: </label>     
+        <input id="domoPrice" type="text" name="price" placeholder="Example: 1.00"/> 
         <input type="hidden" name="_csrf" value={props.csrf} />
         <input className="makeDomoSubmit" type="submit" value="Make Domo"/>
         </form>
@@ -43,8 +53,20 @@ const DomoList = function(props) {
         return (
             <div key={domo._id} className="domo">
                 <img src="/assets/img/domoface.jpeg" alt="domo face" className="domoFace" />
-                <h3 className="domoName"> Name: {domo.name} </h3>
-                <h3 className="domoAge"> Age: {domo.age} </h3>
+                <div className="dataContainer">
+                <h3> Name: {domo.name} </h3>
+                <h3> Age: {domo.age} </h3>
+                <h3> Price: ${domo.price} </h3>
+                <form
+                name="domoForm"
+                onSubmit = {handleDomo}
+                action="/deleter"
+                method="POST"
+                className="deleteDomo"
+                >
+                <input className="deleteDomoSubmit" type="submit" value="Delete Domo"/>
+                </form>
+                </div>    
             </div>
         );
     });

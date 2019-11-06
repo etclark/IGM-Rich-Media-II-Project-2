@@ -13,12 +13,20 @@ var handleDomo = function handleDomo(e) {
     return false;
 };
 
+var deleteDomo = function deleteDomo(e) {
+    e.preventDefault();
+    sendAjax('POST', '/deleteDomo', function () {
+        loadDomosFromServer();
+    });
+    return false;
+};
+
 var DomoForm = function DomoForm(props) {
     return React.createElement(
         "form",
         { id: "domoForm",
             name: "domoForm",
-            onSubmit: handleDomo,
+            onSubmit: deleteDomo,
             action: "/maker",
             method: "POST",
             className: "domoForm"
@@ -35,6 +43,12 @@ var DomoForm = function DomoForm(props) {
             "Age: "
         ),
         React.createElement("input", { id: "domoAge", type: "text", name: "age", placeholder: "Domo Age" }),
+        React.createElement(
+            "label",
+            { htmlFor: "price" },
+            "Price: "
+        ),
+        React.createElement("input", { id: "domoPrice", type: "text", name: "price", placeholder: "Example: 1.00" }),
         React.createElement("input", { type: "hidden", name: "_csrf", value: props.csrf }),
         React.createElement("input", { className: "makeDomoSubmit", type: "submit", value: "Make Domo" })
     );
@@ -59,18 +73,40 @@ var DomoList = function DomoList(props) {
             { key: domo._id, className: "domo" },
             React.createElement("img", { src: "/assets/img/domoface.jpeg", alt: "domo face", className: "domoFace" }),
             React.createElement(
-                "h3",
-                { className: "domoName" },
-                " Name: ",
-                domo.name,
-                " "
-            ),
-            React.createElement(
-                "h3",
-                { className: "domoAge" },
-                " Age: ",
-                domo.age,
-                " "
+                "div",
+                { className: "dataContainer" },
+                React.createElement(
+                    "h3",
+                    null,
+                    " Name: ",
+                    domo.name,
+                    " "
+                ),
+                React.createElement(
+                    "h3",
+                    null,
+                    " Age: ",
+                    domo.age,
+                    " "
+                ),
+                React.createElement(
+                    "h3",
+                    null,
+                    " Price: $",
+                    domo.price,
+                    " "
+                ),
+                React.createElement(
+                    "form",
+                    {
+                        name: "domoForm",
+                        onSubmit: handleDomo,
+                        action: "/deleter",
+                        method: "POST",
+                        className: "deleteDomo"
+                    },
+                    React.createElement("input", { className: "deleteDomoSubmit", type: "submit", value: "Delete Domo" })
+                )
             )
         );
     });

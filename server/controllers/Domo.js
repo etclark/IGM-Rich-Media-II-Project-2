@@ -18,6 +18,7 @@ const makeDomo = (req, res) => {
   const domoData = {
     name: req.body.name,
     age: req.body.age,
+    price: req.body.price,
     owner: req.session.account._id,
   };
   const newDomo = new Domo.DomoModel(domoData);
@@ -47,7 +48,12 @@ const getDomos = (request, response) => {
   });
 };
 
+const deleteDomo = () => {
+
+};
+
 // Exports
 module.exports.makerPage = makerPage;
 module.exports.getDomos = getDomos;
 module.exports.make = makeDomo;
+module.exports.delete = deleteDomo;
