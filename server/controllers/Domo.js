@@ -48,8 +48,17 @@ const getDomos = (request, response) => {
   });
 };
 
-const deleteDomo = () => {
+const deleteDomo = (request, response) => {
+  const req = request;
+  const res = response;
 
+  return Domo.deleteOne(req.body._id, (err, docs) => {
+    if (err) {
+      console.log(err);
+      return res.status(400).json({ error: 'An error occured' });
+    }
+    return res.status(200).json({ complete: 'Deletion complete' });
+  });
 };
 
 // Exports

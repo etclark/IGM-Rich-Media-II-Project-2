@@ -13,8 +13,8 @@ const handleDomo = (e) => {
 
 const deleteDomo = (e) => {
     e.preventDefault();
-    sendAjax('POST', '/deleteDomo', function() {
-        loadDomosFromServer();
+    sendAjax('POST', $("#deleteForm").attr("action"), $("#deleteForm").serialize(), function() {
+        console.log("Deletion Complete maybe?");
     });
     return false;
 };
@@ -23,7 +23,7 @@ const DomoForm = (props) => {
     return (
         <form id="domoForm"
         name="domoForm"
-        onSubmit = {deleteDomo}
+        onSubmit = {handleDomo}
         action="/maker"
         method="POST"
         className="domoForm"
@@ -58,12 +58,15 @@ const DomoList = function(props) {
                 <h3> Age: {domo.age} </h3>
                 <h3> Price: ${domo.price} </h3>
                 <form
-                name="domoForm"
-                onSubmit = {handleDomo}
+                id="deleteForm"
+                name="deleteForm"
+                onSubmit = {deleteDomo}
                 action="/deleter"
                 method="POST"
                 className="deleteDomo"
                 >
+                <input type="hidden" name="_csrf" value={props.csrf} />
+                <input type="hidden" name="_id" value={domo._id} />
                 <input className="deleteDomoSubmit" type="submit" value="Delete Domo"/>
                 </form>
                 </div>    
