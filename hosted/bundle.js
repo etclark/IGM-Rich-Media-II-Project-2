@@ -8,15 +8,18 @@ var handleDomo = function handleDomo(e) {
         return false;
     }
     sendAjax('POST', $("#domoForm").attr("action"), $("#domoForm").serialize(), function () {
-        loadDomosFromServer();
+        var csrfToken = document.querySelector("#csrfToken").value;
+        loadDomosFromServer(csrfToken);
     });
     return false;
 };
 
 var deleteDomo = function deleteDomo(e) {
     e.preventDefault();
-    sendAjax('POST', $("#deleteForm").attr("action"), $("#deleteForm").serialize(), function () {
-        console.log("Deletion Complete maybe?");
+    //console.dir(e.target.id)
+    sendAjax('POST', $("#" + e.target.id).attr("action"), $("#" + e.target.id).serialize(), function () {
+        var csrfToken = document.querySelector("#csrfToken").value;
+        loadDomosFromServer(csrfToken);
     });
     return false;
 };
@@ -49,7 +52,7 @@ var DomoForm = function DomoForm(props) {
             "Price: "
         ),
         React.createElement("input", { id: "domoPrice", type: "text", name: "price", placeholder: "Example: 1.00" }),
-        React.createElement("input", { type: "hidden", name: "_csrf", value: props.csrf }),
+        React.createElement("input", { id: "csrfToken", type: "hidden", name: "_csrf", value: props.csrf }),
         React.createElement("input", { className: "makeDomoSubmit", type: "submit", value: "Make Domo" })
     );
 };
@@ -99,7 +102,7 @@ var DomoList = function DomoList(props) {
                 React.createElement(
                     "form",
                     {
-                        id: "deleteForm",
+                        id: domo._id,
                         name: "deleteForm",
                         onSubmit: deleteDomo,
                         action: "/deleter",
@@ -121,18 +124,18 @@ var DomoList = function DomoList(props) {
     );
 };
 
-var loadDomosFromServer = function loadDomosFromServer() {
+var loadDomosFromServer = function loadDomosFromServer(csrf) {
     sendAjax('GET', '/getDomos', null, function (data) {
-        ReactDOM.render(React.createElement(DomoList, { domos: data.domos }), document.querySelector("#domos"));
+        ReactDOM.render(React.createElement(DomoList, { domos: data.domos, csrf: csrf }), document.querySelector("#domos"));
     });
 };
 
 var setup = function setup(csrf) {
     ReactDOM.render(React.createElement(DomoForm, { csrf: csrf }), document.querySelector("#makeDomo"));
 
-    ReactDOM.render(React.createElement(DomoList, { domos: [] }), document.querySelector("#domos"));
+    ReactDOM.render(React.createElement(DomoList, { domos: [], csrf: csrf }), document.querySelector("#domos"));
 
-    loadDomosFromServer();
+    loadDomosFromServer(csrf);
 };
 
 var getToken = function getToken() {
@@ -165,6 +168,7 @@ var sendAjax = function sendAjax(type, action, data, success) {
         dataType: "json",
         success: success,
         error: function error(xhr, status, _error) {
+            //console.dir(xhr.responseText);
             var messageObj = JSON.parse(xhr.responseText);
             handleError(messageObj.error);
         }

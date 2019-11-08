@@ -52,7 +52,7 @@ const deleteDomo = (request, response) => {
   const req = request;
   const res = response;
 
-  return Domo.deleteOne(req.body._id, (err, docs) => {
+  return Domo.DomoModel.deleteOne({ _id: req.body._id }, (err) => {
     if (err) {
       console.log(err);
       return res.status(400).json({ error: 'An error occured' });
