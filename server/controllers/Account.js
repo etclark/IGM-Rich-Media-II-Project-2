@@ -30,7 +30,7 @@ const login = (request, response) => {
 
     req.session.account = Account.AccountModel.toAPI(account);
 
-    return res.json({ redirect: '/maker' });
+    return res.json({ redirect: '/favorites' });
   });
 };
 
@@ -60,7 +60,7 @@ const signup = (request, response) => {
     const savePromise = newAccount.save();
 
     req.session.account = Account.AccountModel.toAPI(newAccount);
-    savePromise.then(() => res.json({ redirect: '/maker' }));
+    savePromise.then(() => res.json({ redirect: '/favorites' }));
     savePromise.catch((err) => {
       console.log(err);
       if (err.code === 11000) {

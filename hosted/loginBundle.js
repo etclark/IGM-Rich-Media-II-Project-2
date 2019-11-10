@@ -2,7 +2,7 @@
 
 var handleLogin = function handleLogin(e) {
     e.preventDefault();
-    $("#domoMessage").animate({ width: 'hide' }, 350);
+    $("#errorMessage").animate({ width: 'hide' }, 350);
     if ($("#user").val() == '' || $("#pass").val() == '') {
         handleError("RAWR! Username or password is empty");
         return false;
@@ -15,7 +15,7 @@ var handleLogin = function handleLogin(e) {
 
 var handleSignup = function handleSignup(e) {
     e.preventDefault();
-    $("#domoMessage").animate({ width: 'hide' }, 350);
+    $("#errorMessage").animate({ width: 'hide' }, 350);
     if ($("#user").val() == '' || $("#pass").val() == '' || $("#pass2").val() == '') {
         handleError("RAWR! All fields are required");
         return false;
@@ -130,11 +130,11 @@ $(document).ready(function () {
 
 var handleError = function handleError(message) {
     $("#errorMessage").text(message);
-    $("#domoMessage").animate({ width: 'toggle' }, 350);
+    $("#errorMessage").animate({ width: 'toggle' }, 350);
 };
 
 var redirect = function redirect(response) {
-    $("#domoMessage").animate({ width: 'hide' }, 350);
+    $("#errorMessage").animate({ width: 'hide' }, 350);
     window.location = response.redirect;
 };
 

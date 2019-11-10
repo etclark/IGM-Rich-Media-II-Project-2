@@ -1,80 +1,23 @@
 "use strict";
 
-var handleDomo = function handleDomo(e) {
-    e.preventDefault();
-    $("#domoMessage").animate({ width: 'hide' }, 350);
-    if ($("#domoName").val() == '' || $("#domoAge").val() == '') {
-        handleError("RAWR! All fields are required");
-        return false;
-    }
-    sendAjax('POST', $("#domoForm").attr("action"), $("#domoForm").serialize(), function () {
-        var csrfToken = document.querySelector("#csrfToken").value;
-        loadDomosFromServer(csrfToken);
-    });
-    return false;
-};
-
-var deleteDomo = function deleteDomo(e) {
-    e.preventDefault();
-    //console.dir(e.target.id)
-    sendAjax('POST', $("#" + e.target.id).attr("action"), $("#" + e.target.id).serialize(), function () {
-        var csrfToken = document.querySelector("#csrfToken").value;
-        loadDomosFromServer(csrfToken);
-    });
-    return false;
-};
-
-var DomoForm = function DomoForm(props) {
-    return React.createElement(
-        "form",
-        { id: "domoForm",
-            name: "domoForm",
-            onSubmit: handleDomo,
-            action: "/maker",
-            method: "POST",
-            className: "domoForm"
-        },
-        React.createElement(
-            "label",
-            { htmlFor: "username" },
-            "Name: "
-        ),
-        React.createElement("input", { id: "domoName", type: "text", name: "name", placeholder: "Domo Name" }),
-        React.createElement(
-            "label",
-            { htmlFor: "age" },
-            "Age: "
-        ),
-        React.createElement("input", { id: "domoAge", type: "text", name: "age", placeholder: "Domo Age" }),
-        React.createElement(
-            "label",
-            { htmlFor: "price" },
-            "Price: "
-        ),
-        React.createElement("input", { id: "domoPrice", type: "text", name: "price", placeholder: "Example: 1.00" }),
-        React.createElement("input", { id: "csrfToken", type: "hidden", name: "_csrf", value: props.csrf }),
-        React.createElement("input", { className: "makeDomoSubmit", type: "submit", value: "Make Domo" })
-    );
-};
-
-var DomoList = function DomoList(props) {
-    if (props.domos.length === 0) {
+var ProductList = function ProductList(props) {
+    if (props.products.length === 0) {
         return React.createElement(
             "div",
-            { className: "domoList" },
+            { className: "productList" },
             React.createElement(
                 "h3",
-                { className: "emptyDomo" },
-                "No Domos Yet"
+                { className: "emptyProduct" },
+                "No Products Yet"
             )
         );
     }
 
-    var domoNodes = props.domos.map(function (domo) {
+    var productNodes = props.products.map(function (product) {
         return React.createElement(
             "div",
-            { key: domo._id, className: "domo" },
-            React.createElement("img", { src: "/assets/img/domoface.jpeg", alt: "domo face", className: "domoFace" }),
+            { key: product._id, className: "product" },
+            React.createElement("img", { src: "/assets/img/errorface.jpeg", alt: "error face", className: "errorFace" }),
             React.createElement(
                 "div",
                 { className: "dataContainer" },
@@ -82,36 +25,23 @@ var DomoList = function DomoList(props) {
                     "h3",
                     null,
                     " Name: ",
-                    domo.name,
+                    product.name,
                     " "
                 ),
-                React.createElement(
-                    "h3",
-                    null,
-                    " Age: ",
-                    domo.age,
-                    " "
-                ),
+                React.createElement("img", { alt: "product image", src: product.imageLink }),
                 React.createElement(
                     "h3",
                     null,
                     " Price: $",
-                    domo.price,
+                    product.price,
                     " "
                 ),
                 React.createElement(
-                    "form",
-                    {
-                        id: domo._id,
-                        name: "deleteForm",
-                        onSubmit: deleteDomo,
-                        action: "/deleter",
-                        method: "POST",
-                        className: "deleteDomo"
-                    },
-                    React.createElement("input", { type: "hidden", name: "_csrf", value: props.csrf }),
-                    React.createElement("input", { type: "hidden", name: "_id", value: domo._id }),
-                    React.createElement("input", { className: "deleteDomoSubmit", type: "submit", value: "Delete Domo" })
+                    "h2",
+                    null,
+                    " Buy Now!: $",
+                    product.referLink,
+                    " "
                 )
             )
         );
@@ -119,23 +49,165 @@ var DomoList = function DomoList(props) {
 
     return React.createElement(
         "div",
-        { className: "domoList" },
-        domoNodes
+        { className: "productList" },
+        productNodes
     );
 };
 
-var loadDomosFromServer = function loadDomosFromServer(csrf) {
-    sendAjax('GET', '/getDomos', null, function (data) {
-        ReactDOM.render(React.createElement(DomoList, { domos: data.domos, csrf: csrf }), document.querySelector("#domos"));
+var loadProductsFromServer = function loadProductsFromServer(csrf) {
+    sendAjax('GET', '/getProducts', null, function (data) {
+        ReactDOM.render(React.createElement(ProductList, { products: data.products, csrf: csrf }), document.querySelector("#products"));
     });
 };
 
 var setup = function setup(csrf) {
-    ReactDOM.render(React.createElement(DomoForm, { csrf: csrf }), document.querySelector("#makeDomo"));
+    // ReactDOM.render(
+    //     <ProductForm csrf={csrf} />, document.querySelector("#makeProduct")
+    // );
 
-    ReactDOM.render(React.createElement(DomoList, { domos: [], csrf: csrf }), document.querySelector("#domos"));
+    ReactDOM.render(React.createElement(ProductList, { products: [], csrf: csrf }), document.querySelector("#products"));
 
-    loadDomosFromServer(csrf);
+    loadProductsFromServer(csrf);
+};
+
+var getToken = function getToken() {
+    sendAjax('GET', '/getToken', null, function (result) {
+        setup(result.csrfToken);
+    });
+};
+
+$(document).ready(function () {
+    getToken();
+});
+"use strict";
+
+var handleFavorite = function handleFavorite(e) {
+    // e.preventDefault();
+    // $("#errorMessage").animate({width:'hide'},350);
+    // if($("#errorName").val() == '' || $("#errorAge").val() == '') {
+    //     handleError("RAWR! All fields are required");
+    //     return false;
+    // }
+    sendAjax('POST', $("#productForm").attr("action"), $("#productForm").serialize(), function () {
+        var csrfToken = document.querySelector("#csrfToken").value;
+        loadFavoritesFromServer(csrfToken);
+    });
+    return false;
+};
+
+var deleteProduct = function deleteProduct(e) {
+    e.preventDefault();
+    //console.dir(e.target.id)
+    sendAjax('POST', $("#" + e.target.id).attr("action"), $("#" + e.target.id).serialize(), function () {
+        var csrfToken = document.querySelector("#csrfToken").value;
+        loadFavoritesFromServer(csrfToken);
+    });
+    return false;
+};
+
+// const ProductForm = (props) => {
+//     return (
+//         <form id="productForm"
+//         name="productForm"
+//         onSubmit = {handleProduct}
+//         action="/maker"
+//         method="POST"
+//         className="productForm"
+//         >
+//         <label htmlFor="username">Name: </label>
+//         <input id="productName" type="text" name="name" placeholder="Product Name"/>
+//         <label htmlFor="age">Age: </label>     
+//         <input id="productAge" type="text" name="age" placeholder="product Age"/> 
+//         <label htmlFor="price">Price: </label>     
+//         <input id="productPrice" type="text" name="price" placeholder="Example: 1.00"/> 
+//         <input id="csrfToken" type="hidden" name="_csrf" value={props.csrf} />
+//         <input className="makeProductSubmit" type="submit" value="Make product"/>
+//         </form>
+//     );
+// };
+
+var FavoriteList = function FavoriteList(props) {
+    if (props.products.length === 0) {
+        return React.createElement(
+            "div",
+            { className: "favoriteList" },
+            React.createElement(
+                "h3",
+                { className: "emptyProduct" },
+                "No Favorites Yet"
+            )
+        );
+    }
+
+    var productNodes = props.products.map(function (product) {
+        return React.createElement(
+            "div",
+            { key: product._id, className: "product" },
+            React.createElement("img", { src: "/assets/img/errorface.jpeg", alt: "error face", className: "errorFace" }),
+            React.createElement(
+                "div",
+                { className: "dataContainer" },
+                React.createElement(
+                    "h3",
+                    null,
+                    " Name: ",
+                    product.name,
+                    " "
+                ),
+                React.createElement("img", { alt: "product image", src: product.imageLink }),
+                React.createElement(
+                    "h3",
+                    null,
+                    " Price: $",
+                    product.price,
+                    " "
+                ),
+                React.createElement(
+                    "h2",
+                    null,
+                    " Buy Now!: $",
+                    product.referLink,
+                    " "
+                ),
+                React.createElement(
+                    "form",
+                    {
+                        id: product._id,
+                        name: "deleteForm",
+                        onSubmit: deleteProduct,
+                        action: "/deleter",
+                        method: "POST",
+                        className: "deleteFavorite"
+                    },
+                    React.createElement("input", { type: "hidden", name: "_csrf", value: props.csrf }),
+                    React.createElement("input", { type: "hidden", name: "_id", value: product._id }),
+                    React.createElement("input", { className: "deleteFavoriteSubmit", type: "submit", value: "Delete Favorite" })
+                )
+            )
+        );
+    });
+
+    return React.createElement(
+        "div",
+        { className: "favoriteList" },
+        productNodes
+    );
+};
+
+var loadFavoritesFromServer = function loadFavoritesFromServer(csrf) {
+    sendAjax('GET', '/getFavorites', null, function (data) {
+        ReactDOM.render(React.createElement(FavoriteList, { products: data.products, csrf: csrf }), document.querySelector("#products"));
+    });
+};
+
+var setup = function setup(csrf) {
+    // ReactDOM.render(
+    //     <ProductForm csrf={csrf} />, document.querySelector("#makeProduct")
+    // );
+
+    ReactDOM.render(React.createElement(FavoriteList, { products: [], csrf: csrf }), document.querySelector("#products"));
+
+    loadFavoritesFromServer(csrf);
 };
 
 var getToken = function getToken() {
@@ -151,11 +223,11 @@ $(document).ready(function () {
 
 var handleError = function handleError(message) {
     $("#errorMessage").text(message);
-    $("#domoMessage").animate({ width: 'toggle' }, 350);
+    $("#errorMessage").animate({ width: 'toggle' }, 350);
 };
 
 var redirect = function redirect(response) {
-    $("#domoMessage").animate({ width: 'hide' }, 350);
+    $("#errorMessage").animate({ width: 'hide' }, 350);
     window.location = response.redirect;
 };
 

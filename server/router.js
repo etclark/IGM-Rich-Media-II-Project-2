@@ -3,14 +3,17 @@ const mid = require('./middleware');
 
 const router = (app) => {
   app.get('/getToken', mid.requiresSecure, controllers.Account.getToken);
-  app.get('/getDomos', mid.requiresSecure, controllers.Domo.getDomos);
+  app.get('/getFavorites', mid.requiresSecure, controllers.Product.getFavorites);
+  // app.get('/getProducts', mid.requiresSecure, controllers.Product.getProducts);
   app.get('/login', mid.requiresSecure, mid.requiresLogout, controllers.Account.loginPage);
   app.post('/login', mid.requiresSecure, mid.requiresLogout, controllers.Account.login);
   app.post('/signup', mid.requiresSecure, mid.requiresLogout, controllers.Account.signup);
   app.get('/logout', mid.requiresLogin, controllers.Account.logout);
-  app.get('/maker', mid.requiresLogin, controllers.Domo.makerPage);
-  app.post('/maker', mid.requiresLogin, controllers.Domo.make);
-  app.post('/deleter', mid.requiresLogin, controllers.Domo.delete);
+  app.get('/browse', mid.requiresLogin, controllers.Product.browsePage);
+  // app.post('/favorites', mid.requiresLogin, controllers.Product.make);
+  app.get('/favorites', mid.requiresLogin, controllers.Product.favoritesPage);
+  // app.post('/favorites', mid.requiresLogin, controllers.Product.make);
+  app.post('/deleter', mid.requiresLogin, controllers.Product.delete);
   app.get('/', mid.requiresSecure, mid.requiresLogout, controllers.Account.loginPage);
 };
 

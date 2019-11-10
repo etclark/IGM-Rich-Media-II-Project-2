@@ -13,7 +13,7 @@ const csrf = require('csurf');
 
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
-const dbURL = process.env.MONGODB_URI || 'mongodb://heroku_qpqtcl96:pfh6jiltoiljcte8l6d1r3srqr@ds141198.mlab.com:41198/heroku_qpqtcl96';
+const dbURL = process.env.MONGODB_URI || 'mongodb://heroku_g8k87dk1:haruu18l4rqhaqhthvtsl8m48v@ds249757.mlab.com:49757/heroku_g8k87dk1';
 
 mongoose.connect(dbURL, (err) => {
   if (err) {
@@ -52,7 +52,7 @@ app.use(session({
     port: redisURL.port,
     pass: redisPASS,
   }),
-  secret: 'Domo Arigato',
+  secret: 'Mr. Roboto',
   resave: true,
   saveUninitialized: true,
   cookie: {
