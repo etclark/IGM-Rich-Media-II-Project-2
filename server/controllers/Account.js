@@ -71,6 +71,44 @@ const signup = (request, response) => {
   });
 };
 
+//UNFINISHED!!! 
+const changePassword = (request, response) => {
+  const req = request;
+  const res = response;
+
+     // cast to strings to cover up some security flaws
+  req.body.username = `${req.body.username}`;
+  req.body.pass = `${req.body.pass}`;
+  req.body.pass2 = `${req.body.pass2}`;
+
+  if (!req.body.username || !req.body.pass || !req.body.pass2) {
+    return res.status(400).json({ error: 'RAWR! All fields are required' });
+  }
+  if (req.body.pass !== req.body.pass2) {
+    return res.status(400).json({ error: 'RAWR! Passwords do not match' });
+  }
+
+  return Account.AccountModel.generateHash(req.body.pass, (salt, hash) => {
+    const accountData = {
+      username: req.body.username,
+      salt,
+      password: hash,
+    };
+    const newAccount = new Account.AccountModel(accountData);
+    const savePromise = newAccount.save();
+
+    req.session.account = Account.AccountModel.toAPI(newAccount);
+    savePromise.then(() => res.json({ redirect: '/favorites' }));
+    savePromise.catch((err) => {
+      console.log(err);
+      if (err.code === 11000) {
+        return res.status(400).json({ error: 'Username already in use' });
+      }
+      return res.status(400).json({ error: 'An error occurred' });
+    });
+  });
+};
+
 const getToken = (request, response) => {
   const req = request;
   const res = response;

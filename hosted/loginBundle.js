@@ -30,6 +30,23 @@ var handleSignup = function handleSignup(e) {
     return false;
 };
 
+var handlePasswordChange = function handlePasswordChange(e) {
+    e.preventDefault();
+    $("#errorMessage").animate({ width: 'hide' }, 350);
+    if ($("#currentPass").val() == '' || $("#newPass").val() == '') {
+        handleError("RAWR! Both passwords are required");
+        return false;
+    }
+
+    if ($("#currentPass").val() !== $("#newPass").val()) {
+        handleError("RAWR! Passwords do not match");
+        return false;
+    }
+
+    sendAjax('POST', $("#changePasswordForm").attr("action"), $("#changePasswordForm").serialize(), redirect);
+    return false;
+};
+
 var LoginWindow = function LoginWindow(props) {
     return React.createElement(
         "form",
@@ -90,12 +107,43 @@ var SignupWindow = function SignupWindow(props) {
     );
 };
 
+var ChangePasswordWindow = function ChangePasswordWindow(props) {
+    return React.createElement(
+        "form",
+        { id: "changePasswordForm",
+            name: "changePasswordForm",
+            onSubmit: handlePasswordChange,
+            action: "/changePassword",
+            method: "POST",
+            className: "mainForm"
+        },
+        React.createElement(
+            "label",
+            { htmlFor: "currentPass" },
+            "Current Password: "
+        ),
+        React.createElement("input", { id: "currentPass", type: "password", name: "currentPass", placeholder: "Current Password" }),
+        React.createElement(
+            "label",
+            { htmlFor: "newPass" },
+            "New Password: "
+        ),
+        React.createElement("input", { id: "newPass", type: "password", name: "newPass", placeholder: "New Password" }),
+        React.createElement("input", { type: "hidden", name: "_csrf", value: props.csrf }),
+        React.createElement("input", { className: "formSubmit", type: "submit", value: "Change Password" })
+    );
+};
+
 var createLoginWindow = function createLoginWindow(csrf) {
     ReactDOM.render(React.createElement(LoginWindow, { csrf: csrf }), document.querySelector("#content"));
 };
 
 var createSignupWindow = function createSignupWindow(csrf) {
     ReactDOM.render(React.createElement(SignupWindow, { csrf: csrf }), document.querySelector("#content"));
+};
+
+var createChangePasswordWindow = function createChangePasswordWindow(csrf) {
+    ReactDOM.render(React.createElement(ChangePasswordWindow, { csrf: csrf }), document.querySelector("#content"));
 };
 
 var setup = function setup(csrf) {
