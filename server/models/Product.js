@@ -37,7 +37,6 @@ const ProductSchema = new mongoose.Schema({
   },
   owner: {
     type: mongoose.Schema.ObjectId,
-    required: true,
     ref: 'Account',
   },
   savedDate: {

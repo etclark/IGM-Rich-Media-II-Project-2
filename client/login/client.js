@@ -28,23 +28,6 @@ const handleSignup = (e) => {
     return false;
 };
 
-const handlePasswordChange = (e) => {
-    e.preventDefault();
-    $("#errorMessage").animate({width:'hide'},350);
-    if($("#currentPass").val() == '' || $("#newPass").val() == ''){
-        handleError("RAWR! Both passwords are required");
-        return false;
-    }
-
-    if($("#currentPass").val() !== $("#newPass").val()) {
-        handleError("RAWR! Passwords do not match");
-        return false;
-    }
-
-    sendAjax('POST', $("#changePasswordForm").attr("action"), $("#changePasswordForm").serialize(), redirect);
-    return false;
-};
-
 const LoginWindow = (props) => {
     return (
         <form id="loginForm"
@@ -85,25 +68,6 @@ const SignupWindow = (props) => {
     );
 };
 
-const ChangePasswordWindow = (props) => {
-    return (
-        <form id="changePasswordForm"
-        name="changePasswordForm"
-        onSubmit = {handlePasswordChange}
-        action="/changePassword"
-        method="POST"
-        className="mainForm"
-        >
-        <label htmlFor="currentPass">Current Password: </label>     
-        <input id="currentPass" type="password" name="currentPass" placeholder="Current Password"/> 
-        <label htmlFor="newPass">New Password: </label>     
-        <input id="newPass" type="password" name="newPass" placeholder="New Password"/> 
-        <input type="hidden" name="_csrf" value={props.csrf} />
-        <input className="formSubmit" type="submit" value="Change Password"/>
-        </form>
-    );
-};
-
 const createLoginWindow = (csrf) => {
     ReactDOM.render(
         <LoginWindow csrf={csrf} />,
@@ -114,13 +78,6 @@ const createLoginWindow = (csrf) => {
 const createSignupWindow = (csrf) => {
     ReactDOM.render(
         <SignupWindow csrf={csrf} />,
-        document.querySelector("#content")
-    );
-};
-
-const createChangePasswordWindow = (csrf) => {
-    ReactDOM.render(
-        <ChangePasswordWindow csrf={csrf} />,
         document.querySelector("#content")
     );
 };
@@ -140,7 +97,6 @@ const setup = (csrf) => {
         createLoginWindow(csrf);
         return false;
     });
-
     createLoginWindow(csrf); //default view
 };
 

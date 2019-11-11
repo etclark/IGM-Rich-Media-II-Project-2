@@ -12,6 +12,23 @@ const handleFavorite = (e) => {
     return false;
 };
 
+const handlePasswordChange = (e) => {
+    e.preventDefault();
+    $("#errorMessage").animate({width:'hide'},350);
+    if($("#currentPass").val() == '' || $("#newPass").val() == ''){
+        handleError("RAWR! Both passwords are required");
+        return false;
+    }
+
+    if($("#currentPass").val() !== $("#newPass").val()) {
+        handleError("RAWR! Passwords do not match");
+        return false;
+    }
+
+    sendAjax('POST', $("#changePasswordForm").attr("action"), $("#changePasswordForm").serialize(), redirect);
+    return false;
+};
+
 const deleteProduct = (e) => {
     e.preventDefault();
     //console.dir(e.target.id)
@@ -85,6 +102,32 @@ const FavoriteList = function(props) {
     );
 };
 
+const ChangePasswordWindow = (props) => {
+    return (
+        <form id="changePasswordForm"
+        name="changePasswordForm"
+        onSubmit = {handlePasswordChange}
+        action="/changePassword"
+        method="POST"
+        className="mainForm"
+        >
+        <label htmlFor="currentPass">Current Password: </label>     
+        <input id="currentPass" type="password" name="currentPass" placeholder="Current Password"/> 
+        <label htmlFor="newPass">New Password: </label>     
+        <input id="newPass" type="password" name="newPass" placeholder="New Password"/> 
+        <input type="hidden" name="_csrf" value={props.csrf} />
+        <input className="formSubmit" type="submit" value="Change Password"/>
+        </form>
+    );
+};
+
+const createChangePasswordWindow = (csrf) => {
+    ReactDOM.render(
+        <ChangePasswordWindow csrf={csrf} />,
+        document.querySelector("#products")
+    );
+};
+
 const loadFavoritesFromServer = (csrf) => {
     sendAjax('GET', '/getFavorites', null, (data) => {
         ReactDOM.render(
@@ -94,13 +137,23 @@ const loadFavoritesFromServer = (csrf) => {
 };
 
 const setup = (csrf) => {
-    // ReactDOM.render(
-    //     <ProductForm csrf={csrf} />, document.querySelector("#makeProduct")
-    // );
+    const changePassLink = document.querySelector("#changePassLink");
+   
+    changePassLink.addEventListener("click", (e) => {
+        e.preventDefault();
+        createChangePasswordWindow(csrf);
+        return false;
+    });
+
+    
 
     ReactDOM.render(
         <FavoriteList products={[]} csrf={csrf} />, document.querySelector("#products")
     );
+
+     // ReactDOM.render(
+    //     <ProductForm csrf={csrf} />, document.querySelector("#makeProduct")
+    // );
     
     loadFavoritesFromServer(csrf);
 };
