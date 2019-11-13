@@ -54,20 +54,29 @@ const productsPage = (request, response) => {
 
   // WHAT SHOULD THIS LINE BE?!
   // return res.render('app', { csrfToken: req.csrfToken(), products: Product.ProductModel });
+  Product.ProductModel.find({}, (err, docs) => {
+    if (err) {
+      console.log(err);
+      return res.status(400).json({ error: 'An error occurred' });
+    }
+    return res.render('app', { csrfToken: req.csrfToken(), products: docs });
+  });
 };
 
 const getProducts = (request, response) => {
-  const req = request;
+  //const req = request;
   const res = response;
 
   // NOW WHAT SHOULD WE DO HERE?
-  // return Product.ProductModel.findByOwner(req.session.account._id, (err, docs) => {
-  //   if (err) {
-  //     console.log(err);
-  //     return res.status(400).json({ error: 'An error occured' });
-  //   }
-  //   return res.json({ products: docs });
-  // });
+  console.log("Getting Products");
+  return Product.ProductModel.find({}, (err, docs) => {
+    if (err) {
+      console.log(err);
+      return res.status(400).json({ error: 'An error occured' });
+    }
+    console.log("Got Products");
+    return res.json({ products: docs });
+  });
 };
 
 const deleteProduct = (request, response) => {

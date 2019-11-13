@@ -40,7 +40,7 @@ const setup = (csrf) => {
     ReactDOM.render(
         <ProductList products={[]} csrf={csrf} />, document.querySelector("#products")
     );
-    
+    console.log("called")
     loadProductsFromServer(csrf);
 };
 

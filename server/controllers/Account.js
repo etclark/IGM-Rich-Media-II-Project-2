@@ -89,8 +89,8 @@ const changePassword = (request, response) => {
 
   // CANT CALL VALIDATE PASSWORD BECAUSE NOT PUBLIC MEMBER OF
   // ACCOUNTMODEL IN ACCOUNT.JS, SHOULD I MAKE NEW VALIDATION FUCNTION?
-  return Account.AccountModel.validatePassword(
-    req.session.account, req.body.currentPass, (result) => {
+  return Account.validatePassword(
+    req.session.account, req.body.currentPass, (result) => { //=current password hasjehed
       if (result) { // Password belongs to the account
       // Create new password
         return Account.AccountModel.generateHash(req.body.newPass, (salt, hash) => {
@@ -100,6 +100,9 @@ const changePassword = (request, response) => {
             password: hash,
           };
         // THIS CODE ADDS NEW THINGS, I JUST WANT TO UPDATE WHAT ALREADY EXISTS
+        //use find() for account
+        //update passwrod
+        //save back out
           const newAccount = new Account.AccountModel(accountData);
           const savePromise = req.session.account.save();
 

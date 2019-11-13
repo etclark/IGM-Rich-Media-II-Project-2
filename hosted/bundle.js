@@ -62,7 +62,7 @@ var loadProductsFromServer = function loadProductsFromServer(csrf) {
 
 var setup = function setup(csrf) {
     ReactDOM.render(React.createElement(ProductList, { products: [], csrf: csrf }), document.querySelector("#products"));
-
+    console.log("called");
     loadProductsFromServer(csrf);
 };
 
