@@ -152,3 +152,10 @@ var sendAjax = function sendAjax(type, action, data, success) {
         }
     });
 };
+
+//Need to get callback working with getToken!!!!!
+var getToken = function getToken(callback) {
+    sendAjax('GET', '/getToken', null, function (result) {
+        //callback(result.csrfToken);
+    });
+};

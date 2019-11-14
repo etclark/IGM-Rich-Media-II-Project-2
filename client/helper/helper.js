@@ -23,3 +23,10 @@ const sendAjax = (type, action, data, success) => {
         }
     });
 };
+
+//Need to get callback working with getToken!!!!!
+const getToken = (callback) => {
+    sendAjax('GET', '/getToken', null, (result) => {
+        //callback(result.csrfToken);
+    });
+};

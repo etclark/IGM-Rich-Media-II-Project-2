@@ -16,7 +16,19 @@ const ProductList = function(props) {
                 <img alt="product image" src={product.imageLink} />
                 <h3> Price: ${product.price} </h3>
                 <h2> Buy Now!: ${product.referLink} </h2>
-                </div>    
+                </div>
+                <form
+                id={product._id}
+                name="saveForm"
+                onSubmit = {saveProduct}
+                action="/saver"
+                method="POST"
+                className="saveFavorite"
+                >
+                <input type="hidden" name="_csrf" value={props.csrf} />
+                <input type="hidden" name="_id" value={product._id} />
+                <input className="saveFavoriteSubmit" type="submit" value="Save Favorite"/>
+                </form>    
             </div>
         );
     });
@@ -36,20 +48,13 @@ const loadProductsFromServer = (csrf) => {
     });
 };
 
-const setup = (csrf) => {
+const setupProducts = (csrf) => {
     ReactDOM.render(
         <ProductList products={[]} csrf={csrf} />, document.querySelector("#products")
     );
-    console.log("called")
     loadProductsFromServer(csrf);
 };
 
-const getToken = () => {
-    sendAjax('GET', '/getToken', null, (result) => {
-        setup(result.csrfToken);
-    });
-};
-
 $(document).ready(function() {
-    getToken();
+    getToken(setupProducts);
 });

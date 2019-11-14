@@ -20,11 +20,6 @@ const handlePasswordChange = (e) => {
         return false;
     }
 
-    if($("#currentPass").val() !== $("#newPass").val()) {
-        handleError("RAWR! Passwords do not match");
-        return false;
-    }
-
     sendAjax('POST', $("#changePasswordForm").attr("action"), $("#changePasswordForm").serialize(), redirect);
     return false;
 };
@@ -136,7 +131,7 @@ const loadFavoritesFromServer = (csrf) => {
     });
 };
 
-const setup = (csrf) => {
+const setupFavorites = (csrf) => {
     const changePassLink = document.querySelector("#changePassLink");
    
     changePassLink.addEventListener("click", (e) => {
@@ -145,7 +140,7 @@ const setup = (csrf) => {
         return false;
     });
 
-    
+    console.log("called");
 
     ReactDOM.render(
         <FavoriteList products={[]} csrf={csrf} />, document.querySelector("#products")
@@ -158,12 +153,6 @@ const setup = (csrf) => {
     loadFavoritesFromServer(csrf);
 };
 
-const getToken = () => {
-    sendAjax('GET', '/getToken', null, (result) => {
-        setup(result.csrfToken);
-    });
-};
-
 $(document).ready(function() {
-    getToken();
+    getToken(setupFavorites);
 });

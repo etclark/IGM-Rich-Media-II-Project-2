@@ -36,7 +36,7 @@ AccountSchema.statics.toAPI = doc => ({
   _id: doc._id,
 });
 
-const validatePassword = (doc, password, callback) => {
+AccountSchema.statics.validatePassword = (doc, password, callback) => {
   const pass = doc.password;
 
   return crypto.pbkdf2(password, doc.salt, iterations, keyLength, 'RSA-SHA512', (err, hash) => {
@@ -73,7 +73,7 @@ AccountModel.findByUsername(username, (err, doc) => {
     return callback();
   }
 
-  return validatePassword(doc, password, (result) => {
+  return AccountSchema.statics.validatePassword(doc, password, (result) => {
     if (result === true) {
       return callback(null, doc);
     }

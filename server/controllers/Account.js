@@ -71,42 +71,31 @@ const signup = (request, response) => {
   });
 };
 
-// UNFINISHED!!!
+//Allows user to change password
 const changePassword = (request, response) => {
   const req = request;
   const res = response;
 
-     // cast to strings to cover up some security flaws
+  // cast to strings to cover up some security flaws
   req.body.currentPass = `${req.body.currentPass}`;
   req.body.newPass = `${req.body.newPass}`;
 
   if (!req.body.currentPass || !req.body.newPass) {
     return res.status(400).json({ error: 'RAWR! All fields are required' });
   }
-  if (req.body.currentPass !== req.body.newPass) {
-    return res.status(400).json({ error: 'RAWR! Passwords do not match' });
-  }
 
-  // CANT CALL VALIDATE PASSWORD BECAUSE NOT PUBLIC MEMBER OF
-  // ACCOUNTMODEL IN ACCOUNT.JS, SHOULD I MAKE NEW VALIDATION FUCNTION?
-  return Account.validatePassword(
-    req.session.account, req.body.currentPass, (result) => { //=current password hasjehed
-      if (result) { // Password belongs to the account
-      // Create new password
-        return Account.AccountModel.generateHash(req.body.newPass, (salt, hash) => {
-          const accountData = {
-            username: req.body.username,
-            salt,
-            password: hash,
-          };
-        // THIS CODE ADDS NEW THINGS, I JUST WANT TO UPDATE WHAT ALREADY EXISTS
-        //use find() for account
-        //update passwrod
-        //save back out
-          const newAccount = new Account.AccountModel(accountData);
-          const savePromise = req.session.account.save();
+  return Account.AccountModel.authenticate(req.session.account.username, req.body.currentPass, (err, account) => {
+    if (err || !account) {
+      return res.status(401).json({ error: 'Wrong username or password' });
+    }
+    
+    console.log(account);
+    return Account.AccountModel.generateHash(req.body.newPass, (salt, hash) => {
+      account.salt = salt;
+      account.password = hash;
 
-          req.session.account = Account.AccountModel.toAPI(newAccount);
+      const savePromise = account.save();
+      console.log(account);
           savePromise.then(() => res.json({ redirect: '/favorites' }));
           savePromise.catch((err) => {
             console.log(err);
@@ -115,10 +104,8 @@ const changePassword = (request, response) => {
             }
             return res.status(400).json({ error: 'An error occurred' });
           });
-        });
-      }     // Password is not the same as the account's
-      return res.status(400).json({ error: 'The original password is incorrect' });
-    });
+  });
+});
 };
 
 const getToken = (request, response) => {

@@ -92,6 +92,34 @@ const deleteProduct = (request, response) => {
   });
 };
 
+const saveProduct = (request, response) => {
+  //UNFINISGHED!!!
+  const req = request;
+  const res = response;
+
+  const productData = {
+        name: req.body.name,
+        imageLink: req.body.imageLink,
+        price: req.body.price,
+        saved: true,
+        referLink: req.body.referLink,
+        owner: req.session.account._id,
+      };
+
+  const newProduct = new Product.ProductModel(productData);
+    const productPromise = newProduct.save();
+      
+    productPromise.then(() => res.json({ redirect: '/favorites' }));
+    productPromise.catch((err) => {
+      console.log(err);
+      if (err.code === 11000) {
+        return res.status(400).json({ error: 'Product already exists' });
+      }
+      return res.status(400).json({ error: 'An error occurred' });
+    });
+    return productPromise;
+};
+
 // Exports
 module.exports.favoritesPage = favoritesPage;
 module.exports.getFavorites = getFavorites;
@@ -99,3 +127,4 @@ module.exports.productsPage = productsPage;
 module.exports.getProducts = getProducts;
 // module.exports.make = makeProduct;
 module.exports.delete = deleteProduct;
+module.exports.save = saveProduct;

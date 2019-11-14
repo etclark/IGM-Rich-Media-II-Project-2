@@ -43,6 +43,20 @@ var ProductList = function ProductList(props) {
                     product.referLink,
                     " "
                 )
+            ),
+            React.createElement(
+                "form",
+                {
+                    id: product._id,
+                    name: "saveForm",
+                    onSubmit: saveProduct,
+                    action: "/saver",
+                    method: "POST",
+                    className: "saveFavorite"
+                },
+                React.createElement("input", { type: "hidden", name: "_csrf", value: props.csrf }),
+                React.createElement("input", { type: "hidden", name: "_id", value: product._id }),
+                React.createElement("input", { className: "saveFavoriteSubmit", type: "submit", value: "Save Favorite" })
             )
         );
     });
@@ -60,20 +74,13 @@ var loadProductsFromServer = function loadProductsFromServer(csrf) {
     });
 };
 
-var setup = function setup(csrf) {
+var setupProducts = function setupProducts(csrf) {
     ReactDOM.render(React.createElement(ProductList, { products: [], csrf: csrf }), document.querySelector("#products"));
-    console.log("called");
     loadProductsFromServer(csrf);
 };
 
-var getToken = function getToken() {
-    sendAjax('GET', '/getToken', null, function (result) {
-        setup(result.csrfToken);
-    });
-};
-
 $(document).ready(function () {
-    getToken();
+    getToken(setupProducts);
 });
 "use strict";
 
@@ -96,11 +103,6 @@ var handlePasswordChange = function handlePasswordChange(e) {
     $("#errorMessage").animate({ width: 'hide' }, 350);
     if ($("#currentPass").val() == '' || $("#newPass").val() == '') {
         handleError("RAWR! Both passwords are required");
-        return false;
-    }
-
-    if ($("#currentPass").val() !== $("#newPass").val()) {
-        handleError("RAWR! Passwords do not match");
         return false;
     }
 
@@ -244,7 +246,7 @@ var loadFavoritesFromServer = function loadFavoritesFromServer(csrf) {
     });
 };
 
-var setup = function setup(csrf) {
+var setupFavorites = function setupFavorites(csrf) {
     var changePassLink = document.querySelector("#changePassLink");
 
     changePassLink.addEventListener("click", function (e) {
@@ -252,6 +254,8 @@ var setup = function setup(csrf) {
         createChangePasswordWindow(csrf);
         return false;
     });
+
+    console.log("called");
 
     ReactDOM.render(React.createElement(FavoriteList, { products: [], csrf: csrf }), document.querySelector("#products"));
 
@@ -262,14 +266,8 @@ var setup = function setup(csrf) {
     loadFavoritesFromServer(csrf);
 };
 
-var getToken = function getToken() {
-    sendAjax('GET', '/getToken', null, function (result) {
-        setup(result.csrfToken);
-    });
-};
-
 $(document).ready(function () {
-    getToken();
+    getToken(setupFavorites);
 });
 "use strict";
 
@@ -296,5 +294,12 @@ var sendAjax = function sendAjax(type, action, data, success) {
             var messageObj = JSON.parse(xhr.responseText);
             handleError(messageObj.error);
         }
+    });
+};
+
+//Need to get callback working with getToken!!!!!
+var getToken = function getToken(callback) {
+    sendAjax('GET', '/getToken', null, function (result) {
+        //callback(result.csrfToken);
     });
 };

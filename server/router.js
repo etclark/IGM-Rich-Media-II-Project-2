@@ -19,6 +19,7 @@ const router = (app) => {
   // app.post('/favorites', mid.requiresLogin, controllers.Product.make);
   // app.post('/favorites', mid.requiresLogin, controllers.Product.make);
   app.post('/deleter', mid.requiresLogin, controllers.Product.delete);
+  app.post('/saver', mid.requiresLogin, controllers.Product.save);
   app.get('/', mid.requiresSecure, mid.requiresLogout, controllers.Account.loginPage);
 };
 
