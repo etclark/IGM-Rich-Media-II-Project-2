@@ -94,6 +94,10 @@ const deleteProduct = (request, response) => {
 
 const saveProduct = (request, response) => {
   //UNFINISGHED!!!
+  //Save Product Id into array and search
+  //array should be a part of each account
+  //Array contains IDs of products that could then be searched through
+  //saveProduct should say IDs to this array
   const req = request;
   const res = response;
 
