@@ -1,5 +1,6 @@
 const models = require('../models');
 const Product = models.Product;
+const Account = models.Account;
 
 const favoritesPage = (req, res) => {
   Product.ProductModel.findByOwner(req.session.account._id, (err, docs) => {
@@ -15,12 +16,15 @@ const getFavorites = (request, response) => {
   const req = request;
   const res = response;
 
-  return Product.ProductModel.findByOwner(req.session.account._id, (err, docs) => {
+  return Account.AccountModel.find({username: req.session.account.username}, 'products', (err, docs) => {
     if (err) {
       console.log(err);
       return res.status(400).json({ error: 'An error occured' });
     }
-    return res.json({ products: docs });
+    //DOCS.PRODUCTS IS UNDEFINED? BUT IT SAYS IT IS AN EMPTY ARRAY?
+    console.log(docs);
+    console.log(docs.products);
+    return res.json({ products: docs.products });
   });
 };
 
@@ -52,8 +56,6 @@ const productsPage = (request, response) => {
   const req = request;
   const res = response;
 
-  // WHAT SHOULD THIS LINE BE?!
-  // return res.render('app', { csrfToken: req.csrfToken(), products: Product.ProductModel });
   Product.ProductModel.find({}, (err, docs) => {
     if (err) {
       console.log(err);
@@ -64,17 +66,14 @@ const productsPage = (request, response) => {
 };
 
 const getProducts = (request, response) => {
-  //const req = request;
+  //const req = request
   const res = response;
 
-  // NOW WHAT SHOULD WE DO HERE?
-  console.log("Getting Products");
   return Product.ProductModel.find({}, (err, docs) => {
     if (err) {
       console.log(err);
       return res.status(400).json({ error: 'An error occured' });
     }
-    console.log("Got Products");
     return res.json({ products: docs });
   });
 };
@@ -101,27 +100,33 @@ const saveProduct = (request, response) => {
   const req = request;
   const res = response;
 
-  const productData = {
-        name: req.body.name,
-        imageLink: req.body.imageLink,
-        price: req.body.price,
-        saved: true,
-        referLink: req.body.referLink,
-        owner: req.session.account._id,
-      };
+  //Find product to be saved
+  console.log(req.body);
+  Product.ProductModel.find({_id: req.body._id},(err, result) =>{
+    let product = result;
 
-  const newProduct = new Product.ProductModel(productData);
-    const productPromise = newProduct.save();
-      
-    productPromise.then(() => res.json({ redirect: '/favorites' }));
-    productPromise.catch((err) => {
-      console.log(err);
-      if (err.code === 11000) {
-        return res.status(400).json({ error: 'Product already exists' });
+    //Find account to save it to
+    Account.AccountSchema.statics.findByUsername(req.session.account.username, (err, account) => {
+      if (err) {
+        console.log(err);
+        return;
       }
-      return res.status(400).json({ error: 'An error occurred' });
+      //Add product to account array
+      account.products.push(product);
+      console.log(account.products);
+
+      //Save product to account array
+      const savePromise = account.save();
+      savePromise.then(() => res.json({ redirect: '/favorites' }));
+      savePromise.catch((err) => {
+        console.log(err);
+        if (err.code === 11000) {
+          return res.status(400).json({ error: 'You already have this favorite!' });
+        }
+        return res.status(400).json({ error: 'An error occurred' });
+      });
     });
-    return productPromise;
+  });
 };
 
 // Exports

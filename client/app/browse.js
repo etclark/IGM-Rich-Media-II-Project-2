@@ -1,3 +1,12 @@
+const saveProduct = (e) => {
+    e.preventDefault();
+    sendAjax('POST', $(`#${e.target.id}`).attr("action"), $(`#${e.target.id}`).serialize(), function() {
+        let csrfToken = document.querySelector("#csrfToken").value;
+        loadProductsFromServer(csrfToken);
+    });
+    return false;
+};
+
 const ProductList = function(props) {
     if(props.products.length === 0){
         return (
@@ -10,12 +19,12 @@ const ProductList = function(props) {
     const productNodes = props.products.map(function(product) {
         return (
             <div key={product._id} className="product">
-                <img src="/assets/img/errorface.jpeg" alt="error face" className="errorFace" />
                 <div className="dataContainer">
-                <h3> Name: {product.name} </h3>
-                <img alt="product image" src={product.imageLink} />
+                <h3>{product.name} </h3>
+                <img class="productImage" alt="product image" src={product.imageLink} />
                 <h3> Price: ${product.price} </h3>
-                <h2> Buy Now!: ${product.referLink} </h2>
+                <h2> Buy Now!:</h2>
+                <h6> ${product.referLink} </h6>
                 </div>
                 <form
                 id={product._id}
@@ -55,6 +64,12 @@ const setupProducts = (csrf) => {
     loadProductsFromServer(csrf);
 };
 
+const getProductToken = () => {
+    sendAjax('GET', '/getToken', null, (result) => {
+        setupProducts(result.csrfToken);
+    });
+};
+
 $(document).ready(function() {
-    getToken(setupProducts);
+    getProductToken();
 });

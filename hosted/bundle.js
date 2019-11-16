@@ -1,5 +1,14 @@
 "use strict";
 
+var saveProduct = function saveProduct(e) {
+    e.preventDefault();
+    sendAjax('POST', $("#" + e.target.id).attr("action"), $("#" + e.target.id).serialize(), function () {
+        var csrfToken = document.querySelector("#csrfToken").value;
+        loadProductsFromServer(csrfToken);
+    });
+    return false;
+};
+
 var ProductList = function ProductList(props) {
     if (props.products.length === 0) {
         return React.createElement(
@@ -79,8 +88,14 @@ var setupProducts = function setupProducts(csrf) {
     loadProductsFromServer(csrf);
 };
 
+var getProductToken = function getProductToken() {
+    sendAjax('GET', '/getToken', null, function (result) {
+        setupProducts(result.csrfToken);
+    });
+};
+
 $(document).ready(function () {
-    getToken(setupProducts);
+    getProductToken();
 });
 "use strict";
 
@@ -266,8 +281,14 @@ var setupFavorites = function setupFavorites(csrf) {
     loadFavoritesFromServer(csrf);
 };
 
+var getFavoriteToken = function getFavoriteToken() {
+    sendAjax('GET', '/getToken', null, function (result) {
+        setupFavorites(result.csrfToken);
+    });
+};
+
 $(document).ready(function () {
-    getToken(setupFavorites);
+    getFavoriteToken();
 });
 "use strict";
 
@@ -298,9 +319,9 @@ var sendAjax = function sendAjax(type, action, data, success) {
 };
 
 //Need to get callback working with getToken!!!!! SHOULD BE DOABLE!
-var getToken = function getToken(callback) {
-    var callbackF = callback;
-    sendAjax('GET', '/getToken', null, function (result) {
-        callbackF(result.csrfToken);
-    });
-};
+// const getToken = (callback) => {
+//     let callbackF = callback;
+//     sendAjax('GET', '/getToken', null, (result) => {
+//         callbackF(result.csrfToken);
+//     });
+// };

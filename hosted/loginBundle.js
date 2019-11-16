@@ -4,7 +4,7 @@ var handleLogin = function handleLogin(e) {
     e.preventDefault();
     $("#errorMessage").animate({ width: 'hide' }, 350);
     if ($("#user").val() == '' || $("#pass").val() == '') {
-        handleError("RAWR! Username or password is empty");
+        handleError("Username or password is empty");
         return false;
     }
 
@@ -17,12 +17,12 @@ var handleSignup = function handleSignup(e) {
     e.preventDefault();
     $("#errorMessage").animate({ width: 'hide' }, 350);
     if ($("#user").val() == '' || $("#pass").val() == '' || $("#pass2").val() == '') {
-        handleError("RAWR! All fields are required");
+        handleError("All fields are required to proceed");
         return false;
     }
 
     if ($("#pass").val() !== $("#pass2").val()) {
-        handleError("RAWR! Passwords do not match");
+        handleError("Passwords do not match");
         return false;
     }
 
@@ -41,19 +41,31 @@ var LoginWindow = function LoginWindow(props) {
             className: "mainForm"
         },
         React.createElement(
-            "label",
-            { htmlFor: "username" },
-            "Username: "
+            "h3",
+            null,
+            React.createElement(
+                "label",
+                { htmlFor: "username" },
+                "Username: "
+            )
         ),
         React.createElement("input", { id: "user", type: "text", name: "username", placeholder: "username" }),
         React.createElement(
-            "label",
-            { htmlFor: "pass" },
-            "Password: "
+            "h3",
+            null,
+            React.createElement(
+                "label",
+                { htmlFor: "pass" },
+                "Password: "
+            )
         ),
         React.createElement("input", { id: "pass", type: "password", name: "pass", placeholder: "password" }),
         React.createElement("input", { type: "hidden", name: "_csrf", value: props.csrf }),
-        React.createElement("input", { className: "formSubmit", type: "submit", value: "Sign In" })
+        React.createElement(
+            "h6",
+            null,
+            React.createElement("input", { className: "formSubmit", type: "submit", value: "Sign In" })
+        )
     );
 };
 
@@ -68,25 +80,41 @@ var SignupWindow = function SignupWindow(props) {
             className: "mainForm"
         },
         React.createElement(
-            "label",
-            { htmlFor: "username" },
-            "Username: "
+            "h3",
+            null,
+            React.createElement(
+                "label",
+                { htmlFor: "username" },
+                "Username: "
+            )
         ),
         React.createElement("input", { id: "user", type: "text", name: "username", placeholder: "username" }),
         React.createElement(
-            "label",
-            { htmlFor: "pass" },
-            "Password: "
+            "h3",
+            null,
+            React.createElement(
+                "label",
+                { htmlFor: "pass" },
+                "Password: "
+            )
         ),
         React.createElement("input", { id: "pass", type: "password", name: "pass", placeholder: "password" }),
         React.createElement(
-            "label",
-            { htmlFor: "pass2" },
-            "Password: "
+            "h3",
+            null,
+            React.createElement(
+                "label",
+                { htmlFor: "pass2" },
+                "Password: "
+            )
         ),
         React.createElement("input", { id: "pass2", type: "password", name: "pass2", placeholder: "retype password" }),
         React.createElement("input", { type: "hidden", name: "_csrf", value: props.csrf }),
-        React.createElement("input", { className: "formSubmit", type: "submit", value: "Sign In" })
+        React.createElement(
+            "h6",
+            null,
+            React.createElement("input", { className: "formSubmit", type: "submit", value: "Sign Up" })
+        )
     );
 };
 
@@ -154,9 +182,9 @@ var sendAjax = function sendAjax(type, action, data, success) {
 };
 
 //Need to get callback working with getToken!!!!! SHOULD BE DOABLE!
-var getToken = function getToken(callback) {
-    var callbackF = callback;
-    sendAjax('GET', '/getToken', null, function (result) {
-        callbackF(result.csrfToken);
-    });
-};
+// const getToken = (callback) => {
+//     let callbackF = callback;
+//     sendAjax('GET', '/getToken', null, (result) => {
+//         callbackF(result.csrfToken);
+//     });
+// };

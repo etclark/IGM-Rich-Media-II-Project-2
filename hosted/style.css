@@ -4,72 +4,47 @@ html, body {
     margin: 0;
     padding: 0;
     overflow-x: hidden;
+    font-family: Verdana, Arial, sans-serif;
+    background-image: url("/assets/img/background.png");
+    background-repeat: repeat;
 }
 
 #logo {
     height: 40px;
     width: 40;
-    padding-top: 5px;
+    padding: 0.5em;
     float:left;
     border-radius: 8px;
 }
 
-nav {
-    width: 100%;
-    height: 50px;
-    background-color: #3f3f3f;
+#splashContainer{
+    margin: auto;
+    width: 50%;
 }
 
-nav:nth-child(1) {
-    padding-left: 25px;
-}
-
-.navlink {
-    padding: 5px;
-    padding-top: 12px;
-    padding-left: 20px;
-    color: #f2f2f2;
-    font-size: 1.3em;
-    float: left;
-}
-
-.navlink a, .navlink a:link, .navlink a:visited, .navlink a:hover, .navlink a:active {
-    color: #f2f2f2;
-    text-decoration: none;
-    padding: 5px;
-    border-radius: 4px;
-    background-color: #953734;
-    transition: background-color 0.4s ease;
-}
-
-.navlink a:hover {
-    transition: background-color 0.8s ease;
-    background-color: #d99694;
-}
-
-.productForm {
+/* .productForm {
     border: 2px solid #632423;
     height: 35px;
     width: 100%;
     margin-top:0px;
     padding-top:10px;
-    background-color: ##53734;
+    background-color: #353734;
     border-bottom-right-radius: 4px;
     border-top-right-radius: 4px;
-}
+} */
 
-.productForm label {
+/* .productForm label {
     display: inline-block;
     width: 75px;
     margin-left: 10px;
     font-size: 1.2em;
     float: left;
     color: #f2f2f2;
-}
+} */
 
-.productForm input[type=text] {
+/* .productForm input[type=text] {
     float:left;
-}
+} */
 
 /* .makeProductSubmit {
     transition: background-color 0.4s ease;
@@ -91,23 +66,23 @@ nav:nth-child(1) {
 } */
 
 .mainForm {
-    height: 300px;
     width: 350px;
-    margin: 0 auto;
-    padding-top: 350px;
-    font-size: 1.2em;
+    background-color: #632423;
+    margin: 2em auto;
+    padding: 1em;
+    font-size: 2em;
+    border-radius: 6px;
+    border: 5px ridge #953734;
 }
 
 .mainForm h3 {
     text-align: center;
+    color: #d99694;
 }
 
-.mainForm label {
-    display: inline-block;
-    width: 100px;
-    margin-right: 10px;
-    text-align: right;
-    font-size: 1.2em;
+.mainForm input {
+    margin: 0 auto;
+    width: 40%;
 }
 
 .formSubmit {
@@ -116,11 +91,10 @@ nav:nth-child(1) {
     text-align: center;
     margin: 0 auto;
     margin-top: 14px;
-    font-size: 1.2em;
-    width: 100px;
-    background-color: #55acee;
-    border-radius: 2px;
-    border-color: #66acee;
+    font-size: 1.4em;
+    background-color: #878C8F;
+    border-radius: 6px;
+    border-color: #d99694;
     padding: 3px 0px;
     color: white;
     text-decoration: none;
@@ -132,14 +106,15 @@ nav:nth-child(1) {
 
 .formSubmit:hover {
     transition: background-color 0.4s ease;
-    background-color: #338acc;
+    background-color: #d99694;
+    cursor: pointer;
 }
 
 #user, #pass, #pass2 {
     text-align: center;
-    font-size: 1.1em;
-    width: 180px;
+    font-size: 0.7em;
     border-radius: 6px;
+    width: 100%;
 }
 
 #user:focus, #pass:focus, #pass2:focus {
@@ -165,20 +140,14 @@ nav:nth-child(1) {
     left: 20px;
 }
 
-#speech {
-    height: 120px;
-    width: 250px;
-    z-index:300;
-}
-
 #errorMessage {
     font-size: 1.2em;
     font-weight: bold;
-    color: red;
+    color: #953734;
     font-style: italic;
 }
 
-#product {
+/* #product {
     z-index: 225;
     margin-top: -20px;
     margin-left: 135px;
@@ -187,18 +156,18 @@ nav:nth-child(1) {
     -ms-transform: rotate(330deg);
     -webkit-transform: rotate(330deg); 
     transform: rotate(330deg);
-}
+} */
 
 #products {
-    width: 40%;
+    width: 50%;
     min-width: 400px;
-    border: 2px solid #55acee;
+    border: 2px ridge #953734;
     border-radius: 4px;
     margin: 0 auto;
-    margin-top: 100px;
+    margin-top: 1em;
 }
 
-.product {
+/* .product {
     width: 95%;
     margin: 0 auto;
     margin-top: 2px;
@@ -209,16 +178,16 @@ nav:nth-child(1) {
     padding: 10px;
     min-height:60px;
     overflow: hidden;
-}
+} */
 
-.product:hover {
+/* .product:hover {
     transition: border-color 0.2s ease-out;
     border-color: rgba(255,255,255, 0.8);
     transition: background-color 2.6s ease-out;
     background-color: #66bfff;
-}
+} */
 
-img.productFace {
+/* img.productFace {
     margin-left: 25px;
     margin-right: 10px;
     height: 50px;
@@ -226,7 +195,7 @@ img.productFace {
     border-radius: 4px;
     margin-top:10px;
     float:left;
-}
+} */
 
 h3.emptyProduct {
     width: 400px;
@@ -242,6 +211,11 @@ h3.productName {
     font-weight: bold;
     padding-left: 65px;
     font-size: 1.5em;
+}
+
+.productImage{
+    width: 3em;
+    height: 3em;
 }
 
 h3.productPrice {
@@ -261,8 +235,6 @@ h3.productPrice {
     margin-bottom:10px;
 }
 
-/* New Styles */
-
 .dataContainer{
     display: block;
     width: 100%;
@@ -273,6 +245,154 @@ h3.productPrice {
     float: left; 
 }
 
+/* DROPDOWN NAV MENU */
+
+nav{
+  position: fixed; /* Set the navbar to fixed position */
+  top: 0; /* Position the navbar at the top of the page */
+  width: 100%; /* Full width */
+}
+/* Dropdown Button */
+.dropbtn {
+    padding: 16px;
+    font-size: 16px;
+    font-size: 1.3em;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.4s ease;
+  }
+
+  .dropbtn a:hover {
+    transition: background-color 0.8s ease;
+    background-color: #d99694;
+}
+
+.dropbtn a,.dropbtn a:visited{
+    border-width:1px;
+    border-radius:6px;
+}
+  
+  /* The container <div> - needed to position the dropdown content */
+  .dropdown {
+    position: relative;
+    /* display: inline-block; */
+    float: right;
+  }
+  
+  /* Dropdown Content (Hidden by Default) */
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    right: 0;
+  }
+  
+  /* Links inside the dropdown */
+  .dropdown-content a {
+    font-family: Verdana, Arial, sans-serif;
+    font-weight: bold;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    color: #f1f1f1;;
+    border-radius: 4px;
+    background-color: #953734;
+    transition: background-color 0.4s ease;
+  }
+  
+  /* Change color of dropdown links on hover */
+  .dropdown-content a:hover {background-color: #d99694;}
+  
+  /* Show the dropdown menu on hover */
+  .dropdown:hover .dropdown-content {display: block;}
+
+  #hamburger{
+      width: 2em;
+      height: 2em;
+      margin-right: 0.5em;
+  }
+  
+  .navlink{
+    font-weight: bold;
+    color: #f1f1f1;
+    background-color: #953734;
+    text-decoration: none;
+    padding: 0.5em;
+    border-radius: 4px;
+  }
+
+  .navlink:hover {
+    transition: background-color 0.8s ease;
+    background-color: #d99694;
+    text-decoration: underline;
+  }
+  /* Change the background color of the dropdown button when the dropdown content is shown */
+  /* .dropdown:hover .dropbtn {background-color: #3e8e41;} */
+
+
+
+
+
+
+/* .nav {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    height: 50px;
+    background-color: #3f3f3f;
+}
+
+nav:nth-child(1) {
+    padding-bottom: 25px;
+}
+
+.navlink {
+    padding: 5px;
+    padding-top: 12px;
+    padding-left: 20px;
+    color: #f2f2f2;
+    font-size: 1.3em;
+    float: left;
+}
+
+.navlink a, .navlink a:link, .navlink a:visited, .navlink a:hover, .navlink a:active {
+    display: block;
+    color: #f2f2f2;
+    text-decoration: none;
+    padding: 5px;
+    border-radius: 4px;
+    background-color: #953734;
+    transition: background-color 0.4s ease;
+}
+
+.navlink a:hover {
+    transition: background-color 0.8s ease;
+    background-color: #d99694;
+}
+
 .navmiddle a,.navmiddle a:visited{
     border-width:1px;
-    border-radius:6px;}
+    border-radius:6px;
+}
+
+.nav-content{
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    overflow: auto;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropbtn a, .dropbtn a:link, .dropbtn a:visited, .dropbtn a:hover, .dropbtn a:active {
+    display: block;
+    color: #f2f2f2;
+    text-decoration: none;
+    padding: 5px;
+    border-radius: 4px;
+    background-color: #953734;
+    transition: background-color 0.4s ease;
+} */

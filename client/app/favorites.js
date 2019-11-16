@@ -16,7 +16,7 @@ const handlePasswordChange = (e) => {
     e.preventDefault();
     $("#errorMessage").animate({width:'hide'},350);
     if($("#currentPass").val() == '' || $("#newPass").val() == ''){
-        handleError("RAWR! Both passwords are required");
+        handleError("All fields are required to proceed");
         return false;
     }
 
@@ -67,7 +67,6 @@ const FavoriteList = function(props) {
     const productNodes = props.products.map(function(product) {
         return (
             <div key={product._id} className="product">
-                <img src="/assets/img/errorface.jpeg" alt="error face" className="errorFace" />
                 <div className="dataContainer">
                 <h3> Name: {product.name} </h3>
                 <img alt="product image" src={product.imageLink} />
@@ -106,12 +105,12 @@ const ChangePasswordWindow = (props) => {
         method="POST"
         className="mainForm"
         >
-        <label htmlFor="currentPass">Current Password: </label>     
-        <input id="currentPass" type="password" name="currentPass" placeholder="Current Password"/> 
-        <label htmlFor="newPass">New Password: </label>     
-        <input id="newPass" type="password" name="newPass" placeholder="New Password"/> 
+        <h3><label htmlFor="currentPass">Current Password: </label></h3>   
+        <input id="pass" type="password" name="currentPass" placeholder="Current Password"/> 
+        <h3><label htmlFor="newPass">New Password: </label></h3>     
+        <input id="pass2" type="password" name="newPass" placeholder="New Password"/> 
         <input type="hidden" name="_csrf" value={props.csrf} />
-        <input className="formSubmit" type="submit" value="Change Password"/>
+        <h6><input className="formSubmit" type="submit" value="Change Password"/></h6>
         </form>
     );
 };
@@ -153,6 +152,12 @@ const setupFavorites = (csrf) => {
     loadFavoritesFromServer(csrf);
 };
 
+const getFavoriteToken = () => {
+    sendAjax('GET', '/getToken', null, (result) => {
+        setupFavorites(result.csrfToken);
+    });
+};
+
 $(document).ready(function() {
-    getToken(setupFavorites);
+    getFavoriteToken();
 });
