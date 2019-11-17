@@ -43,7 +43,6 @@ app.use(favicon(`${__dirname}/../hosted/img/favicon.png`));
 app.disable('x-powered-by');
 app.use(compression());
 app.use(bodyParser.urlencoded({ extended: true }));
-// app.use(bodyParser.json());
 // Session Configuration
 app.use(session({
   key: 'sessionid',

@@ -26,18 +26,20 @@ var ProductList = function ProductList(props) {
         return React.createElement(
             "div",
             { key: product._id, className: "product" },
-            React.createElement("img", { src: "/assets/img/errorface.jpeg", alt: "error face", className: "errorFace" }),
             React.createElement(
                 "div",
                 { className: "dataContainer" },
                 React.createElement(
                     "h3",
                     null,
-                    " Name: ",
                     product.name,
                     " "
                 ),
-                React.createElement("img", { alt: "product image", src: product.imageLink }),
+                React.createElement(
+                    "div",
+                    { "class": "productImageContainer" },
+                    React.createElement("img", { "class": "productImage", alt: "product image", src: product.imageLink })
+                ),
                 React.createElement(
                     "h3",
                     null,
@@ -48,7 +50,12 @@ var ProductList = function ProductList(props) {
                 React.createElement(
                     "h2",
                     null,
-                    " Buy Now!: $",
+                    " Buy Now!:"
+                ),
+                React.createElement(
+                    "h6",
+                    null,
+                    " $",
                     product.referLink,
                     " "
                 )
@@ -100,12 +107,6 @@ $(document).ready(function () {
 "use strict";
 
 var handleFavorite = function handleFavorite(e) {
-    // e.preventDefault();
-    // $("#errorMessage").animate({width:'hide'},350);
-    // if($("#errorName").val() == '' || $("#errorAge").val() == '') {
-    //     handleError("RAWR! All fields are required");
-    //     return false;
-    // }
     sendAjax('POST', $("#productForm").attr("action"), $("#productForm").serialize(), function () {
         var csrfToken = document.querySelector("#csrfToken").value;
         loadFavoritesFromServer(csrfToken);
@@ -117,7 +118,7 @@ var handlePasswordChange = function handlePasswordChange(e) {
     e.preventDefault();
     $("#errorMessage").animate({ width: 'hide' }, 350);
     if ($("#currentPass").val() == '' || $("#newPass").val() == '') {
-        handleError("RAWR! Both passwords are required");
+        handleError("All fields are required to proceed");
         return false;
     }
 
@@ -134,27 +135,6 @@ var deleteProduct = function deleteProduct(e) {
     });
     return false;
 };
-
-// const ProductForm = (props) => {
-//     return (
-//         <form id="productForm"
-//         name="productForm"
-//         onSubmit = {handleProduct}
-//         action="/maker"
-//         method="POST"
-//         className="productForm"
-//         >
-//         <label htmlFor="username">Name: </label>
-//         <input id="productName" type="text" name="name" placeholder="Product Name"/>
-//         <label htmlFor="age">Age: </label>     
-//         <input id="productAge" type="text" name="age" placeholder="product Age"/> 
-//         <label htmlFor="price">Price: </label>     
-//         <input id="productPrice" type="text" name="price" placeholder="Example: 1.00"/> 
-//         <input id="csrfToken" type="hidden" name="_csrf" value={props.csrf} />
-//         <input className="makeProductSubmit" type="submit" value="Make product"/>
-//         </form>
-//     );
-// };
 
 var FavoriteList = function FavoriteList(props) {
     if (props.products.length === 0) {
@@ -173,7 +153,6 @@ var FavoriteList = function FavoriteList(props) {
         return React.createElement(
             "div",
             { key: product._id, className: "product" },
-            React.createElement("img", { src: "/assets/img/errorface.jpeg", alt: "error face", className: "errorFace" }),
             React.createElement(
                 "div",
                 { className: "dataContainer" },
@@ -235,19 +214,31 @@ var ChangePasswordWindow = function ChangePasswordWindow(props) {
             className: "mainForm"
         },
         React.createElement(
-            "label",
-            { htmlFor: "currentPass" },
-            "Current Password: "
+            "h3",
+            null,
+            React.createElement(
+                "label",
+                { htmlFor: "currentPass" },
+                "Current Password: "
+            )
         ),
-        React.createElement("input", { id: "currentPass", type: "password", name: "currentPass", placeholder: "Current Password" }),
+        React.createElement("input", { id: "pass", type: "password", name: "currentPass", placeholder: "Current Password" }),
         React.createElement(
-            "label",
-            { htmlFor: "newPass" },
-            "New Password: "
+            "h3",
+            null,
+            React.createElement(
+                "label",
+                { htmlFor: "newPass" },
+                "New Password: "
+            )
         ),
-        React.createElement("input", { id: "newPass", type: "password", name: "newPass", placeholder: "New Password" }),
+        React.createElement("input", { id: "pass2", type: "password", name: "newPass", placeholder: "New Password" }),
         React.createElement("input", { type: "hidden", name: "_csrf", value: props.csrf }),
-        React.createElement("input", { className: "formSubmit", type: "submit", value: "Change Password" })
+        React.createElement(
+            "h6",
+            null,
+            React.createElement("input", { className: "formSubmit", type: "submit", value: "Change Password" })
+        )
     );
 };
 
@@ -270,14 +261,7 @@ var setupFavorites = function setupFavorites(csrf) {
         return false;
     });
 
-    console.log("called");
-
     ReactDOM.render(React.createElement(FavoriteList, { products: [], csrf: csrf }), document.querySelector("#products"));
-
-    // ReactDOM.render(
-    //     <ProductForm csrf={csrf} />, document.querySelector("#makeProduct")
-    // );
-
     loadFavoritesFromServer(csrf);
 };
 

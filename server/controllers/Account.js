@@ -15,7 +15,7 @@ const login = (request, response) => {
   const req = request;
   const res = response;
 
-    // cast to strings to cover up some security flaws
+  // cast to strings to cover up some security flaws
   const username = `${req.body.username}`;
   const password = `${req.body.pass}`;
 
@@ -38,7 +38,7 @@ const signup = (request, response) => {
   const req = request;
   const res = response;
 
-     // cast to strings to cover up some security flaws
+  // cast to strings to cover up some security flaws
   req.body.username = `${req.body.username}`;
   req.body.pass = `${req.body.pass}`;
   req.body.pass2 = `${req.body.pass2}`;
@@ -72,7 +72,7 @@ const signup = (request, response) => {
   });
 };
 
-//Allows user to change password
+// Allows user to change password
 const changePassword = (request, response) => {
   const req = request;
   const res = response;
@@ -85,28 +85,30 @@ const changePassword = (request, response) => {
     return res.status(400).json({ error: 'All fields are required to proceed' });
   }
 
-  return Account.AccountModel.authenticate(req.session.account.username, req.body.currentPass, (err, account) => {
-    if (err || !account) {
-      return res.status(401).json({ error: 'Wrong username or password' });
-    }
-    
-    console.log(account);
-    return Account.AccountModel.generateHash(req.body.newPass, (salt, hash) => {
-      account.salt = salt;
-      account.password = hash;
+  return Account.AccountModel.authenticate(req.session.account.username,
+     req.body.currentPass, (err, docs) => {
+       const account = docs;
+       if (err || !account) {
+         return res.status(401).json({ error: 'Wrong username or password' });
+       }
 
-      const savePromise = account.save();
-      console.log(account);
-          savePromise.then(() => res.json({ redirect: '/favorites' }));
-          savePromise.catch((err) => {
-            console.log(err);
-            if (err.code === 11000) {
-              return res.status(400).json({ error: 'Password is the same as before' });
-            }
-            return res.status(400).json({ error: 'An error occurred' });
-          });
-  });
-});
+       console.log(account);
+       return Account.AccountModel.generateHash(req.body.newPass, (salt, hash) => {
+         account.salt = salt;
+         account.password = hash;
+
+         const savePromise = account.save();
+         console.log(account);
+         savePromise.then(() => res.json({ redirect: '/favorites' }));
+         savePromise.catch((error) => {
+           console.log(error);
+           if (error.code === 11000) {
+             return res.status(400).json({ error: 'Password is the same as before' });
+           }
+           return res.status(400).json({ error: 'An error occurred' });
+         });
+       });
+     });
 };
 
 const getToken = (request, response) => {

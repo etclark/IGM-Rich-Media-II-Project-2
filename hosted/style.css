@@ -18,52 +18,8 @@ html, body {
 }
 
 #splashContainer{
-    margin: auto;
-    width: 50%;
+    text-align: center;
 }
-
-/* .productForm {
-    border: 2px solid #632423;
-    height: 35px;
-    width: 100%;
-    margin-top:0px;
-    padding-top:10px;
-    background-color: #353734;
-    border-bottom-right-radius: 4px;
-    border-top-right-radius: 4px;
-} */
-
-/* .productForm label {
-    display: inline-block;
-    width: 75px;
-    margin-left: 10px;
-    font-size: 1.2em;
-    float: left;
-    color: #f2f2f2;
-} */
-
-/* .productForm input[type=text] {
-    float:left;
-} */
-
-/* .makeProductSubmit {
-    transition: background-color 0.4s ease;
-    display: inline;
-    width: 90px;
-    background-color: #55acee;
-    border-radius: 2px;
-    color: white;
-    text-decoration: none;
-}
-
-.makeProductSubmit:link, .makeProductSubmit:visited, .makeProductSubmit:hover, .makeProductSubmit:active {
-    color: white;
-}
-
-.makeProductSubmit:hover {
-    transition: background-color 0.4s ease;
-    background-color: #338acc;
-} */
 
 .mainForm {
     width: 350px;
@@ -91,7 +47,7 @@ html, body {
     text-align: center;
     margin: 0 auto;
     margin-top: 14px;
-    font-size: 1.4em;
+    font-size: 0.6em;
     background-color: #878C8F;
     border-radius: 6px;
     border-color: #d99694;
@@ -147,17 +103,6 @@ html, body {
     font-style: italic;
 }
 
-/* #product {
-    z-index: 225;
-    margin-top: -20px;
-    margin-left: 135px;
-    height: 450px;
-    width: 300px;
-    -ms-transform: rotate(330deg);
-    -webkit-transform: rotate(330deg); 
-    transform: rotate(330deg);
-} */
-
 #products {
     width: 50%;
     min-width: 400px;
@@ -187,16 +132,6 @@ html, body {
     background-color: #66bfff;
 } */
 
-/* img.productFace {
-    margin-left: 25px;
-    margin-right: 10px;
-    height: 50px;
-    width: 50px;
-    border-radius: 4px;
-    margin-top:10px;
-    float:left;
-} */
-
 h3.emptyProduct {
     width: 400px;
     font-size: 1.5em;
@@ -213,9 +148,14 @@ h3.productName {
     font-size: 1.5em;
 }
 
+.productImageContainer{
+    width: 200px;
+    height: 200px;
+}
+
 .productImage{
-    width: 3em;
-    height: 3em;
+    width: 100%;
+    height: auto;
 }
 
 h3.productPrice {
@@ -275,7 +215,6 @@ nav{
   /* The container <div> - needed to position the dropdown content */
   .dropdown {
     position: relative;
-    /* display: inline-block; */
     float: right;
   }
   
@@ -328,71 +267,3 @@ nav{
     background-color: #d99694;
     text-decoration: underline;
   }
-  /* Change the background color of the dropdown button when the dropdown content is shown */
-  /* .dropdown:hover .dropbtn {background-color: #3e8e41;} */
-
-
-
-
-
-
-/* .nav {
-    position: relative;
-    display: inline-block;
-    width: 100%;
-    height: 50px;
-    background-color: #3f3f3f;
-}
-
-nav:nth-child(1) {
-    padding-bottom: 25px;
-}
-
-.navlink {
-    padding: 5px;
-    padding-top: 12px;
-    padding-left: 20px;
-    color: #f2f2f2;
-    font-size: 1.3em;
-    float: left;
-}
-
-.navlink a, .navlink a:link, .navlink a:visited, .navlink a:hover, .navlink a:active {
-    display: block;
-    color: #f2f2f2;
-    text-decoration: none;
-    padding: 5px;
-    border-radius: 4px;
-    background-color: #953734;
-    transition: background-color 0.4s ease;
-}
-
-.navlink a:hover {
-    transition: background-color 0.8s ease;
-    background-color: #d99694;
-}
-
-.navmiddle a,.navmiddle a:visited{
-    border-width:1px;
-    border-radius:6px;
-}
-
-.nav-content{
-    display: none;
-    position: absolute;
-    background-color: #f1f1f1;
-    min-width: 160px;
-    overflow: auto;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-}
-
-.dropbtn a, .dropbtn a:link, .dropbtn a:visited, .dropbtn a:hover, .dropbtn a:active {
-    display: block;
-    color: #f2f2f2;
-    text-decoration: none;
-    padding: 5px;
-    border-radius: 4px;
-    background-color: #953734;
-    transition: background-color 0.4s ease;
-} */

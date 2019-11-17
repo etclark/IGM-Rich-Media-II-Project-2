@@ -21,7 +21,9 @@ const ProductList = function(props) {
             <div key={product._id} className="product">
                 <div className="dataContainer">
                 <h3>{product.name} </h3>
-                <img class="productImage" alt="product image" src={product.imageLink} />
+                <div class="productImageContainer">
+                    <img class="productImage" alt="product image" src={product.imageLink} />
+                </div>
                 <h3> Price: ${product.price} </h3>
                 <h2> Buy Now!:</h2>
                 <h6> ${product.referLink} </h6>

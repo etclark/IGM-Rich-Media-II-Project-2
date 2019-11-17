@@ -1,10 +1,4 @@
 const handleFavorite = (e) => {
-    // e.preventDefault();
-    // $("#errorMessage").animate({width:'hide'},350);
-    // if($("#errorName").val() == '' || $("#errorAge").val() == '') {
-    //     handleError("RAWR! All fields are required");
-    //     return false;
-    // }
     sendAjax('POST', $("#productForm").attr("action"), $("#productForm").serialize(), function() {
         let csrfToken = document.querySelector("#csrfToken").value;
         loadFavoritesFromServer(csrfToken);
@@ -33,27 +27,6 @@ const deleteProduct = (e) => {
     });
     return false;
 };
-
-// const ProductForm = (props) => {
-//     return (
-//         <form id="productForm"
-//         name="productForm"
-//         onSubmit = {handleProduct}
-//         action="/maker"
-//         method="POST"
-//         className="productForm"
-//         >
-//         <label htmlFor="username">Name: </label>
-//         <input id="productName" type="text" name="name" placeholder="Product Name"/>
-//         <label htmlFor="age">Age: </label>     
-//         <input id="productAge" type="text" name="age" placeholder="product Age"/> 
-//         <label htmlFor="price">Price: </label>     
-//         <input id="productPrice" type="text" name="price" placeholder="Example: 1.00"/> 
-//         <input id="csrfToken" type="hidden" name="_csrf" value={props.csrf} />
-//         <input className="makeProductSubmit" type="submit" value="Make product"/>
-//         </form>
-//     );
-// };
 
 const FavoriteList = function(props) {
     if(props.products.length === 0){
@@ -139,16 +112,9 @@ const setupFavorites = (csrf) => {
         return false;
     });
 
-    console.log("called");
-
     ReactDOM.render(
         <FavoriteList products={[]} csrf={csrf} />, document.querySelector("#products")
-    );
-
-     // ReactDOM.render(
-    //     <ProductForm csrf={csrf} />, document.querySelector("#makeProduct")
-    // );
-    
+    );   
     loadFavoritesFromServer(csrf);
 };
 

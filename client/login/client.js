@@ -97,7 +97,8 @@ const setup = (csrf) => {
         createLoginWindow(csrf);
         return false;
     });
-    createLoginWindow(csrf); //default view
+     //default view
+    createLoginWindow(csrf);
 };
 
 const getToken = () => {
