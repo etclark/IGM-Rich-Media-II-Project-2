@@ -8,7 +8,8 @@ const saveProduct = (e) => {
 };
 
 const ProductList = function(props) {
-    if(props.products.length === 0){
+    if(props.products === undefined){
+        props.products = [];
         return (
             <div className="productList">
                 <h3 className="emptyProduct">No Products Yet</h3>

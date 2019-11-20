@@ -29,7 +29,8 @@ const deleteProduct = (e) => {
 };
 
 const FavoriteList = function(props) {
-    if(props.products.length === 0){
+    if(props.products === undefined){
+        props.products = [];
         return (
             <div className="favoriteList">
                 <h3 className="emptyProduct">No Favorites Yet</h3>

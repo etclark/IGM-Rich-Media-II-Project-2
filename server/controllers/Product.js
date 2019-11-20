@@ -78,27 +78,38 @@ const saveProduct = (request, response) => {
   Product.ProductModel.find({ _id: req.body._id }, (result) => {
     const product = result;
 
-    // Find account to save it to
-    Account.AccountSchema.statics.findByUsername(req.session.account.username, (err, account) => {
-      if (err) {
-        console.log(err);
-        return;
-      }
-      // Add product to account array
-      account.products.push(product);
-      console.log(account.products);
-
-      // Save product to account array
-      const savePromise = account.save();
-      savePromise.then(() => res.json({ redirect: '/favorites' }));
-      savePromise.catch((error) => {
-        console.log(error);
-        if (error.code === 11000) {
-          return res.status(400).json({ error: 'You already have this favorite!' });
+    Account.AccountModel.findOneAndUpdate(
+      {username: req.session.account.username},
+      {$push: {products: product}},
+      (err) => {
+        if(err){
+          return res.status(400).json({error: 'There was an error saving this favorite'});
         }
-        return res.status(400).json({ error: 'An error occurred' });
-      });
-    });
+        return res.json({redirect: '/favorites'});
+      }
+    );
+
+    // // Find account to save it to
+    // Account.AccountSchema.statics.findByUsername(req.session.account.username, (err, account) => {
+    //   if (err) {
+    //     console.log(err);
+    //     return;
+    //   }
+    //   // Add product to account array
+    //   account.products.push(product);
+    //   console.log(account.products);
+
+    //   // Save product to account array
+    //   const savePromise = account.save();
+    //   savePromise.then(() => res.json({ redirect: '/favorites' }));
+    //   savePromise.catch((error) => {
+    //     console.log(error);
+    //     if (error.code === 11000) {
+    //       return res.status(400).json({ error: 'You already have this favorite!' });
+    //     }
+    //     return res.status(400).json({ error: 'An error occurred' });
+    //   });
+    // });
   });
 };
 

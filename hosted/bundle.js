@@ -10,7 +10,8 @@ var saveProduct = function saveProduct(e) {
 };
 
 var ProductList = function ProductList(props) {
-    if (props.products.length === 0) {
+    if (props.products === undefined) {
+        props.products = [];
         return React.createElement(
             "div",
             { className: "productList" },
@@ -137,7 +138,8 @@ var deleteProduct = function deleteProduct(e) {
 };
 
 var FavoriteList = function FavoriteList(props) {
-    if (props.products.length === 0) {
+    if (props.products === undefined) {
+        props.products = [];
         return React.createElement(
             "div",
             { className: "favoriteList" },
