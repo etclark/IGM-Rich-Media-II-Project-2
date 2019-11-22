@@ -73,6 +73,8 @@ const getProductToken = () => {
     });
 };
 
+//Create listener on button click instead of using document ready function.
+
 $(document).ready(function() {
     getProductToken();
 });
