@@ -23,7 +23,7 @@ const ProductList = function(props) {
                 <div className="dataContainer">
                 <h3>{product.name} </h3>
                 <div class="productImageContainer">
-                    <img class="productImage" alt="product image" src={product.imageLink} />
+                    <img class="productImage" alt="product image" src={product.imageLink}/>
                 </div>
                 <h3> Price: ${product.price} </h3>
                 <h2> Buy Now!:</h2>
@@ -64,7 +64,7 @@ const setupProducts = (csrf) => {
     ReactDOM.render(
         <ProductList products={[]} csrf={csrf} />, document.querySelector("#products")
     );
-    loadProductsFromServer(csrf);
+    loadProductsFromServer(csrf);  
 };
 
 const getProductToken = () => {
@@ -75,6 +75,11 @@ const getProductToken = () => {
 
 //Create listener on button click instead of using document ready function.
 
-$(document).ready(function() {
-    getProductToken();
-});
+var browseButton = document.querySelector("#browseLink");
+browseButton.addEventListener("click", getProductToken);
+
+// $(document).ready(function() {
+//     var browseButton = document.querySelector("#browseLink");
+//     browseButton.addEventListener("click", getProductToken);
+//     //getProductToken();
+// });

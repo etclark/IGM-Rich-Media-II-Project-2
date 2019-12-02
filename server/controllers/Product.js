@@ -23,8 +23,8 @@ const getFavorites = (request, response) => {
          return res.status(400).json({ error: 'An error occured' });
        }
     // DOCS.PRODUCTS IS UNDEFINED? BUT IT SAYS IT IS AN EMPTY ARRAY?
-       console.log(docs);
-       console.log(docs.products);
+      //  console.log(docs);
+      //  console.log(docs.products);
        return res.json({ products: docs.products });
      });
 };

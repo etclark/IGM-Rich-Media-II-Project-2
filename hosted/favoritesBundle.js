@@ -166,41 +166,10 @@ var getFavoriteToken = function getFavoriteToken() {
     });
 };
 
-$(document).ready(function () {
-    getFavoriteToken();
-});
-"use strict";
+var favoritesButton = document.querySelector("#favoritesLink");
+favoritesButton.addEventListener("click", getFavoriteToken);
 
-var handleError = function handleError(message) {
-    $("#errorMessage").text(message);
-    $("#errorMessage").animate({ width: 'toggle' }, 350);
-};
+// $(document).ready(function() {
+//     // getFavoriteToken();
 
-var redirect = function redirect(response) {
-    $("#errorMessage").animate({ width: 'hide' }, 350);
-    window.location = response.redirect;
-};
-
-var sendAjax = function sendAjax(type, action, data, success) {
-    $.ajax({
-        cache: false,
-        type: type,
-        url: action,
-        data: data,
-        dataType: "json",
-        success: success,
-        error: function error(xhr, status, _error) {
-            //console.dir(xhr.responseText);
-            var messageObj = JSON.parse(xhr.responseText);
-            handleError(messageObj.error);
-        }
-    });
-};
-
-//Need to get callback working with getToken!!!!! SHOULD BE DOABLE!
-// const getToken = (callback) => {
-//     let callbackF = callback;
-//     sendAjax('GET', '/getToken', null, (result) => {
-//         callbackF(result.csrfToken);
-//     });
-// };
+// });

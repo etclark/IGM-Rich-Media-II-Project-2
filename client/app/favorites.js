@@ -125,6 +125,10 @@ const getFavoriteToken = () => {
     });
 };
 
-$(document).ready(function() {
-    getFavoriteToken();
-});
+var favoritesButton = document.querySelector("#favoritesLink");
+favoritesButton.addEventListener("click", getFavoriteToken);
+
+// $(document).ready(function() {
+//     // getFavoriteToken();
+    
+// });

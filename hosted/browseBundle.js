@@ -102,9 +102,16 @@ var getProductToken = function getProductToken() {
     });
 };
 
-$(document).ready(function () {
-    getProductToken();
-});
+//Create listener on button click instead of using document ready function.
+
+var browseButton = document.querySelector("#browseLink");
+browseButton.addEventListener("click", getProductToken);
+
+// $(document).ready(function() {
+//     var browseButton = document.querySelector("#browseLink");
+//     browseButton.addEventListener("click", getProductToken);
+//     //getProductToken();
+// });
 "use strict";
 
 var handleError = function handleError(message) {
