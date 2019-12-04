@@ -35,14 +35,7 @@ const ProductSchema = new mongoose.Schema({
     type: String,
     min: 0,
   },
-  owner: {
-    type: mongoose.Schema.ObjectId,
-    ref: 'Account',
-  },
-  savedDate: {
-    type: Date,
-    default: Date.now,
-  },
+
 });
 
 ProductSchema.statics.toAPI = (doc) => ({
@@ -51,6 +44,7 @@ ProductSchema.statics.toAPI = (doc) => ({
   price: doc.price,
   saved: doc.saved,
   referLink: doc.referLink,
+  tag: doc.tag,
 });
 
 ProductSchema.statics.findByOwner = (ownerID, callback) => {
@@ -58,7 +52,7 @@ ProductSchema.statics.findByOwner = (ownerID, callback) => {
     owner: convertID(ownerID),
   };
 
-  return ProductModel.find(search).select('name imageLink price saved referLink').exec(callback);
+  return ProductModel.find(search).select('name imageLink price saved referLink tag').exec(callback);
 };
 
 ProductModel = mongoose.model('Product', ProductSchema);

@@ -1,5 +1,7 @@
 "use strict";
 
+var csrfToken = void 0;
+
 var handleFavorite = function handleFavorite(e) {
     sendAjax('POST', $("#productForm").attr("action"), $("#productForm").serialize(), function () {
         var csrfToken = document.querySelector("#csrfToken").value;
@@ -24,7 +26,6 @@ var deleteProduct = function deleteProduct(e) {
     e.preventDefault();
     //console.dir(e.target.id)
     sendAjax('POST', $("#" + e.target.id).attr("action"), $("#" + e.target.id).serialize(), function () {
-        var csrfToken = document.querySelector("#csrfToken").value;
         loadFavoritesFromServer(csrfToken);
     });
     return false;
@@ -162,14 +163,10 @@ var setupFavorites = function setupFavorites(csrf) {
 
 var getFavoriteToken = function getFavoriteToken() {
     sendAjax('GET', '/getToken', null, function (result) {
+        csrfToken = result.csrfToken;
         setupFavorites(result.csrfToken);
     });
 };
 
 var favoritesButton = document.querySelector("#favoritesLink");
 favoritesButton.addEventListener("click", getFavoriteToken);
-
-// $(document).ready(function() {
-//     // getFavoriteToken();
-
-// });

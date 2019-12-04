@@ -1,3 +1,5 @@
+let csrfToken
+
 const handleFavorite = (e) => {
     sendAjax('POST', $("#productForm").attr("action"), $("#productForm").serialize(), function() {
         let csrfToken = document.querySelector("#csrfToken").value;
@@ -22,7 +24,6 @@ const deleteProduct = (e) => {
     e.preventDefault();
     //console.dir(e.target.id)
     sendAjax('POST', $(`#${e.target.id}`).attr("action"), $(`#${e.target.id}`).serialize(), function() {
-        let csrfToken = document.querySelector("#csrfToken").value;
         loadFavoritesFromServer(csrfToken);
     });
     return false;
@@ -121,14 +122,10 @@ const setupFavorites = (csrf) => {
 
 const getFavoriteToken = () => {
     sendAjax('GET', '/getToken', null, (result) => {
+        csrfToken = result.csrfToken;
         setupFavorites(result.csrfToken);
     });
 };
 
 var favoritesButton = document.querySelector("#favoritesLink");
 favoritesButton.addEventListener("click", getFavoriteToken);
-
-// $(document).ready(function() {
-//     // getFavoriteToken();
-    
-// });

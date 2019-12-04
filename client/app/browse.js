@@ -1,7 +1,9 @@
+let csrfToken;
+
 const saveProduct = (e) => {
     e.preventDefault();
+    //console.dir($(`#${e.target.id}`));
     sendAjax('POST', $(`#${e.target.id}`).attr("action"), $(`#${e.target.id}`).serialize(), function() {
-        let csrfToken = document.querySelector("#csrfToken").value;
         loadProductsFromServer(csrfToken);
     });
     return false;
@@ -22,8 +24,8 @@ const ProductList = function(props) {
             <div key={product._id} className="product">
                 <div className="dataContainer">
                 <h3>{product.name} </h3>
-                <div class="productImageContainer">
-                    <img class="productImage" alt="product image" src={product.imageLink}/>
+                <div className="productImageContainer">
+                    <img className="productImage" alt="product image" src={product.imageLink}/>
                 </div>
                 <h3> Price: ${product.price} </h3>
                 <h2> Buy Now!:</h2>
@@ -69,17 +71,14 @@ const setupProducts = (csrf) => {
 
 const getProductToken = () => {
     sendAjax('GET', '/getToken', null, (result) => {
+        csrfToken = result.csrfToken;
         setupProducts(result.csrfToken);
     });
 };
 
-//Create listener on button click instead of using document ready function.
-
 var browseButton = document.querySelector("#browseLink");
 browseButton.addEventListener("click", getProductToken);
 
-// $(document).ready(function() {
-//     var browseButton = document.querySelector("#browseLink");
-//     browseButton.addEventListener("click", getProductToken);
-//     //getProductToken();
-// });
+$(document).ready(function() {
+    getProductToken();
+});

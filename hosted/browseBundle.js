@@ -1,9 +1,11 @@
 "use strict";
 
+var csrfToken = void 0;
+
 var saveProduct = function saveProduct(e) {
     e.preventDefault();
+    //console.dir($(`#${e.target.id}`));
     sendAjax('POST', $("#" + e.target.id).attr("action"), $("#" + e.target.id).serialize(), function () {
-        var csrfToken = document.querySelector("#csrfToken").value;
         loadProductsFromServer(csrfToken);
     });
     return false;
@@ -38,8 +40,8 @@ var ProductList = function ProductList(props) {
                 ),
                 React.createElement(
                     "div",
-                    { "class": "productImageContainer" },
-                    React.createElement("img", { "class": "productImage", alt: "product image", src: product.imageLink })
+                    { className: "productImageContainer" },
+                    React.createElement("img", { className: "productImage", alt: "product image", src: product.imageLink })
                 ),
                 React.createElement(
                     "h3",
@@ -98,20 +100,17 @@ var setupProducts = function setupProducts(csrf) {
 
 var getProductToken = function getProductToken() {
     sendAjax('GET', '/getToken', null, function (result) {
+        csrfToken = result.csrfToken;
         setupProducts(result.csrfToken);
     });
 };
 
-//Create listener on button click instead of using document ready function.
-
 var browseButton = document.querySelector("#browseLink");
 browseButton.addEventListener("click", getProductToken);
 
-// $(document).ready(function() {
-//     var browseButton = document.querySelector("#browseLink");
-//     browseButton.addEventListener("click", getProductToken);
-//     //getProductToken();
-// });
+$(document).ready(function () {
+    getProductToken();
+});
 "use strict";
 
 var handleError = function handleError(message) {

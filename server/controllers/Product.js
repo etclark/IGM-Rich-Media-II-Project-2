@@ -16,16 +16,13 @@ const getFavorites = (request, response) => {
   const req = request;
   const res = response;
 
-  return Account.AccountModel.find({ username: req.session.account.username },
-     'products', (err, docs) => {
+  return Account.AccountModel.findByUsername(req.session.account.username , (err, doc) => {
        if (err) {
          console.log(err);
          return res.status(400).json({ error: 'An error occured' });
        }
-    // DOCS.PRODUCTS IS UNDEFINED? BUT IT SAYS IT IS AN EMPTY ARRAY?
-      //  console.log(docs);
-      //  console.log(docs.products);
-       return res.json({ products: docs.products });
+      //  console.log(doc.products);
+       return res.json({ products: doc.products });
      });
 };
 
@@ -59,25 +56,31 @@ const deleteProduct = (request, response) => {
   const req = request;
   const res = response;
 
-  return Product.ProductModel.deleteOne({ _id: req.body._id }, (err) => {
-    if (err) {
-      console.log(err);
-      return res.status(400).json({ error: 'An error occured' });
-    }
-    return res.status(200).json({ complete: 'Deletion complete' });
+  Product.ProductModel.findById(req.body._id, (err, result) => {
+    const product = result._doc;
+    console.dir(result._doc);
+    Account.AccountModel.findOneAndUpdate(
+      {username: req.session.account.username},
+      {$pull: {products: {_id: product._id}}},
+      (error) => {
+        if(error){
+            return res.status(400).json({ error: 'An error occured' });
+        }
+        console.dir('success?');
+        return res.status(200).json({ complete: 'Deletion complete' });
+      }
+    );
   });
 };
 
 const saveProduct = (request, response) => {
-  // UNFINISHED!!!
   const req = request;
   const res = response;
 
   // Find product to be saved
-  console.log(req.body);
-  Product.ProductModel.find({ _id: req.body._id }, (result) => {
+  Product.ProductModel.findById(req.body._id, (err, result) => {
     const product = result;
-
+    
     Account.AccountModel.findOneAndUpdate(
       {username: req.session.account.username},
       {$push: {products: product}},
@@ -88,28 +91,6 @@ const saveProduct = (request, response) => {
         return res.json({redirect: '/favorites'});
       }
     );
-
-    // // Find account to save it to
-    // Account.AccountSchema.statics.findByUsername(req.session.account.username, (err, account) => {
-    //   if (err) {
-    //     console.log(err);
-    //     return;
-    //   }
-    //   // Add product to account array
-    //   account.products.push(product);
-    //   console.log(account.products);
-
-    //   // Save product to account array
-    //   const savePromise = account.save();
-    //   savePromise.then(() => res.json({ redirect: '/favorites' }));
-    //   savePromise.catch((error) => {
-    //     console.log(error);
-    //     if (error.code === 11000) {
-    //       return res.status(400).json({ error: 'You already have this favorite!' });
-    //     }
-    //     return res.status(400).json({ error: 'An error occurred' });
-    //   });
-    // });
   });
 };
 
