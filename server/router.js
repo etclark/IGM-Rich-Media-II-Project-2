@@ -7,6 +7,7 @@ const router = (app) => {
   app.get('/getFavorites', mid.requiresSecure, controllers.Product.getFavorites);
   app.get('/products', mid.requiresLogin, controllers.Product.productsPage);
   app.get('/getProducts', mid.requiresSecure, controllers.Product.getProducts);
+  app.get('/getProductsByTag', mid.requiresSecure, controllers.Product.getProductsByTag);
   app.get('/login', mid.requiresSecure, mid.requiresLogout, controllers.Account.loginPage);
   app.post('/login', mid.requiresSecure, mid.requiresLogout, controllers.Account.login);
   app.post('/signup', mid.requiresSecure, mid.requiresLogout, controllers.Account.signup);

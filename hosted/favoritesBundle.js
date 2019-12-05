@@ -53,26 +53,31 @@ var FavoriteList = function FavoriteList(props) {
                 "div",
                 { className: "dataContainer" },
                 React.createElement(
-                    "h3",
-                    null,
-                    " Name: ",
+                    "h2",
+                    { className: "productName" },
                     product.name,
                     " "
                 ),
-                React.createElement("img", { alt: "product image", src: product.imageLink }),
                 React.createElement(
-                    "h3",
-                    null,
+                    "div",
+                    { className: "productImageContainer" },
+                    React.createElement("img", { className: "productImage", alt: "product image", src: product.imageLink })
+                ),
+                React.createElement(
+                    "h4",
+                    { className: "productPrice" },
                     " Price: $",
                     product.price,
                     " "
                 ),
                 React.createElement(
                     "h2",
-                    null,
-                    " Buy Now!: $",
-                    product.referLink,
-                    " "
+                    { className: "buyBtn buyBtn-2 buyBtn-sep icon-cart" },
+                    React.createElement(
+                        "a",
+                        { href: product.referLink },
+                        "Buy Now!"
+                    )
                 ),
                 React.createElement(
                     "form",
@@ -149,14 +154,6 @@ var loadFavoritesFromServer = function loadFavoritesFromServer(csrf) {
 };
 
 var setupFavorites = function setupFavorites(csrf) {
-    var changePassLink = document.querySelector("#changePassLink");
-
-    changePassLink.addEventListener("click", function (e) {
-        e.preventDefault();
-        createChangePasswordWindow(csrf);
-        return false;
-    });
-
     ReactDOM.render(React.createElement(FavoriteList, { products: [], csrf: csrf }), document.querySelector("#products"));
     loadFavoritesFromServer(csrf);
 };

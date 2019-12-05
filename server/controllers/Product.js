@@ -21,7 +21,6 @@ const getFavorites = (request, response) => {
          console.log(err);
          return res.status(400).json({ error: 'An error occured' });
        }
-      //  console.log(doc.products);
        return res.json({ products: doc.products });
      });
 };
@@ -52,13 +51,28 @@ const getProducts = (request, response) => {
   });
 };
 
+//BROKEN
+const getProductsByTag = (request, response, tag) => {
+  // const req = request
+  const res = response;
+  const searchTerm = tag;
+  console.log(searchTerm);
+
+  return Product.ProductModel.find({tag: searchTerm}, (err, docs) => {
+    if (err) {
+      console.log(err);
+      return res.status(400).json({ error: 'An error occured' });
+    }
+    return res.json({ products: docs });
+  });
+};
+
 const deleteProduct = (request, response) => {
   const req = request;
   const res = response;
 
   Product.ProductModel.findById(req.body._id, (err, result) => {
     const product = result._doc;
-    console.dir(result._doc);
     Account.AccountModel.findOneAndUpdate(
       {username: req.session.account.username},
       {$pull: {products: {_id: product._id}}},
@@ -66,7 +80,6 @@ const deleteProduct = (request, response) => {
         if(error){
             return res.status(400).json({ error: 'An error occured' });
         }
-        console.dir('success?');
         return res.status(200).json({ complete: 'Deletion complete' });
       }
     );
@@ -99,5 +112,6 @@ module.exports.favoritesPage = favoritesPage;
 module.exports.getFavorites = getFavorites;
 module.exports.productsPage = productsPage;
 module.exports.getProducts = getProducts;
+module.exports.getProductsByTag = getProductsByTag;
 module.exports.delete = deleteProduct;
 module.exports.save = saveProduct;

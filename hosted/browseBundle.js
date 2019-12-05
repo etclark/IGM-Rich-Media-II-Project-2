@@ -33,8 +33,8 @@ var ProductList = function ProductList(props) {
                 "div",
                 { className: "dataContainer" },
                 React.createElement(
-                    "h3",
-                    null,
+                    "h2",
+                    { className: "productName" },
                     product.name,
                     " "
                 ),
@@ -44,38 +44,39 @@ var ProductList = function ProductList(props) {
                     React.createElement("img", { className: "productImage", alt: "product image", src: product.imageLink })
                 ),
                 React.createElement(
-                    "h3",
-                    null,
+                    "h4",
+                    { className: "productPrice" },
                     " Price: $",
                     product.price,
                     " "
                 ),
                 React.createElement(
                     "h2",
-                    null,
-                    " Buy Now!:"
+                    { className: "buyBtn buyBtn-2 buyBtn-sep icon-cart" },
+                    React.createElement(
+                        "a",
+                        { href: product.referLink },
+                        "Buy Now!"
+                    )
                 ),
                 React.createElement(
-                    "h6",
-                    null,
-                    " $",
-                    product.referLink,
-                    " "
+                    "form",
+                    {
+                        id: product._id,
+                        name: "saveForm",
+                        onSubmit: saveProduct,
+                        action: "/saver",
+                        method: "POST",
+                        className: "saveFavorite" },
+                    React.createElement("input", { type: "hidden", name: "_csrf", value: props.csrf }),
+                    React.createElement("input", { type: "hidden", name: "_id", value: product._id }),
+                    React.createElement(
+                        "a",
+                        { href: "/browse", onclick: "return false;", className: "favBtn" },
+                        "Favorite",
+                        React.createElement("input", { className: "saveFavoriteSubmit", type: "submit", value: "" })
+                    )
                 )
-            ),
-            React.createElement(
-                "form",
-                {
-                    id: product._id,
-                    name: "saveForm",
-                    onSubmit: saveProduct,
-                    action: "/saver",
-                    method: "POST",
-                    className: "saveFavorite"
-                },
-                React.createElement("input", { type: "hidden", name: "_csrf", value: props.csrf }),
-                React.createElement("input", { type: "hidden", name: "_id", value: product._id }),
-                React.createElement("input", { className: "saveFavoriteSubmit", type: "submit", value: "Save Favorite" })
             )
         );
     });
@@ -93,7 +94,23 @@ var loadProductsFromServer = function loadProductsFromServer(csrf) {
     });
 };
 
+var loadProductsByTag = function loadProductsByTag(csrf, tag) {
+    //HELP CAN'T PASS TAG TO FUNCTION THAT NEEDS IT!
+    var searchTerm = tag;
+    sendAjax('GET', '/getProductsByTag', null, function (data, searchTerm) {
+        ReactDOM.render(React.createElement(ProductList, { products: data.products, csrf: csrf }), document.querySelector("#products"));
+    });
+};
+
 var setupProducts = function setupProducts(csrf) {
+    var changePassLink = document.querySelector("#changePassLink");
+
+    changePassLink.addEventListener("click", function (e) {
+        e.preventDefault();
+        createChangePasswordWindow(csrf);
+        return false;
+    });
+
     ReactDOM.render(React.createElement(ProductList, { products: [], csrf: csrf }), document.querySelector("#products"));
     loadProductsFromServer(csrf);
 };
@@ -107,6 +124,32 @@ var getProductToken = function getProductToken() {
 
 var browseButton = document.querySelector("#browseLink");
 browseButton.addEventListener("click", getProductToken);
+
+//Sorting Buttons
+var pokemonButton = document.querySelector("#pokemonButton");
+pokemonButton.addEventListener("click", function () {
+    loadProductsByTag(csrfToken, "pokemon");
+});
+
+var zeldaButton = document.querySelector("#zeldaButton");
+zeldaButton.addEventListener("click", function () {
+    loadProductsByTag(csrfToken, "zelda");
+});
+
+var marioButton = document.querySelector("#marioButton");
+marioButton.addEventListener("click", function () {
+    loadProductsByTag(csrfToken, "mario");
+});
+
+var borderlandsButton = document.querySelector("#borderlandsButton");
+borderlandsButton.addEventListener("click", function () {
+    loadProductsByTag(csrfToken, "borderlands");
+});
+
+var metroidButton = document.querySelector("#metroidButton");
+metroidButton.addEventListener("click", function () {
+    loadProductsByTag(csrfToken, "metroid");
+});
 
 $(document).ready(function () {
     getProductToken();
@@ -138,11 +181,3 @@ var sendAjax = function sendAjax(type, action, data, success) {
         }
     });
 };
-
-//Need to get callback working with getToken!!!!! SHOULD BE DOABLE!
-// const getToken = (callback) => {
-//     let callbackF = callback;
-//     sendAjax('GET', '/getToken', null, (result) => {
-//         callbackF(result.csrfToken);
-//     });
-// };

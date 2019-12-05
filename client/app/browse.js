@@ -23,26 +23,25 @@ const ProductList = function(props) {
         return (
             <div key={product._id} className="product">
                 <div className="dataContainer">
-                <h3>{product.name} </h3>
-                <div className="productImageContainer">
-                    <img className="productImage" alt="product image" src={product.imageLink}/>
+                    <h2 className="productName">{product.name} </h2>
+                    <div className="productImageContainer">
+                        <img className="productImage" alt="product image" src={product.imageLink}/>
+                    </div>
+                    <h4 className="productPrice"> Price: ${product.price} </h4>
+                    <h2 className="buyBtn buyBtn-2 buyBtn-sep icon-cart"><a href={product.referLink}>Buy Now!</a></h2>
+                    <form
+                    id={product._id}
+                    name="saveForm"
+                    onSubmit = {saveProduct}
+                    action="/saver"
+                    method="POST"
+                    className="saveFavorite">
+                    <input type="hidden" name="_csrf" value={props.csrf} />
+                    <input type="hidden" name="_id" value={product._id} />
+                    <a href="/browse" onclick="return false;" className="favBtn">Favorite<input className="saveFavoriteSubmit" type="submit" value=""/></a>
+                    {/* <input className="saveFavoriteSubmit" type="submit" value=""/> */}
+                    </form>   
                 </div>
-                <h3> Price: ${product.price} </h3>
-                <h2> Buy Now!:</h2>
-                <h6> ${product.referLink} </h6>
-                </div>
-                <form
-                id={product._id}
-                name="saveForm"
-                onSubmit = {saveProduct}
-                action="/saver"
-                method="POST"
-                className="saveFavorite"
-                >
-                <input type="hidden" name="_csrf" value={props.csrf} />
-                <input type="hidden" name="_id" value={product._id} />
-                <input className="saveFavoriteSubmit" type="submit" value="Save Favorite"/>
-                </form>    
             </div>
         );
     });
@@ -62,7 +61,25 @@ const loadProductsFromServer = (csrf) => {
     });
 };
 
+const loadProductsByTag = (csrf, tag) => {
+    //HELP CAN'T PASS TAG TO FUNCTION THAT NEEDS IT!
+    const searchTerm = tag;
+    sendAjax('GET', '/getProductsByTag', null, (data, searchTerm) => {
+        ReactDOM.render(
+            <ProductList products={data.products} csrf={csrf} />, document.querySelector("#products")
+        );
+    });
+};
+
 const setupProducts = (csrf) => {
+    const changePassLink = document.querySelector("#changePassLink");
+   
+    changePassLink.addEventListener("click", (e) => {
+        e.preventDefault();
+        createChangePasswordWindow(csrf);
+        return false;
+    });
+
     ReactDOM.render(
         <ProductList products={[]} csrf={csrf} />, document.querySelector("#products")
     );
@@ -78,6 +95,32 @@ const getProductToken = () => {
 
 var browseButton = document.querySelector("#browseLink");
 browseButton.addEventListener("click", getProductToken);
+
+//Sorting Buttons
+var pokemonButton = document.querySelector("#pokemonButton");
+pokemonButton.addEventListener("click", function(){
+    loadProductsByTag(csrfToken, "pokemon");
+});
+
+var zeldaButton = document.querySelector("#zeldaButton");
+zeldaButton.addEventListener("click", function(){
+    loadProductsByTag(csrfToken, "zelda");
+});
+
+var marioButton = document.querySelector("#marioButton");
+marioButton.addEventListener("click", function(){
+    loadProductsByTag(csrfToken, "mario");
+});
+
+var borderlandsButton = document.querySelector("#borderlandsButton");
+borderlandsButton.addEventListener("click", function(){
+    loadProductsByTag(csrfToken, "borderlands");
+});
+
+var metroidButton = document.querySelector("#metroidButton");
+metroidButton.addEventListener("click", function(){
+    loadProductsByTag(csrfToken, "metroid");
+});
 
 $(document).ready(function() {
     getProductToken();

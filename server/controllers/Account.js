@@ -92,13 +92,11 @@ const changePassword = (request, response) => {
          return res.status(401).json({ error: 'Wrong username or password' });
        }
 
-       console.log(account);
        return Account.AccountModel.generateHash(req.body.newPass, (salt, hash) => {
          account.salt = salt;
          account.password = hash;
 
          const savePromise = account.save();
-         console.log(account);
          savePromise.then(() => res.json({ redirect: '/favorites' }));
          savePromise.catch((error) => {
            console.log(error);

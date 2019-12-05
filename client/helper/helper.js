@@ -23,11 +23,3 @@ const sendAjax = (type, action, data, success) => {
         }
     });
 };
-
-//Need to get callback working with getToken!!!!! SHOULD BE DOABLE!
-// const getToken = (callback) => {
-//     let callbackF = callback;
-//     sendAjax('GET', '/getToken', null, (result) => {
-//         callbackF(result.csrfToken);
-//     });
-// };

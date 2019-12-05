@@ -43,10 +43,12 @@ const FavoriteList = function(props) {
         return (
             <div key={product._id} className="product">
                 <div className="dataContainer">
-                <h3> Name: {product.name} </h3>
-                <img alt="product image" src={product.imageLink} />
-                <h3> Price: ${product.price} </h3>
-                <h2> Buy Now!: ${product.referLink} </h2>
+                <h2 className="productName">{product.name} </h2>
+                <div className="productImageContainer">
+                    <img className="productImage" alt="product image" src={product.imageLink}/>
+                </div>
+                <h4 className="productPrice"> Price: ${product.price} </h4>
+                <h2 className="buyBtn buyBtn-2 buyBtn-sep icon-cart"><a href={product.referLink}>Buy Now!</a></h2>
                 <form
                 id={product._id}
                 name="deleteForm"
@@ -106,14 +108,6 @@ const loadFavoritesFromServer = (csrf) => {
 };
 
 const setupFavorites = (csrf) => {
-    const changePassLink = document.querySelector("#changePassLink");
-   
-    changePassLink.addEventListener("click", (e) => {
-        e.preventDefault();
-        createChangePasswordWindow(csrf);
-        return false;
-    });
-
     ReactDOM.render(
         <FavoriteList products={[]} csrf={csrf} />, document.querySelector("#products")
     );   
