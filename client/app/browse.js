@@ -2,8 +2,7 @@ let csrfToken;
 
 const saveProduct = (e) => {
     e.preventDefault();
-    //console.dir($(`#${e.target.id}`));
-    sendAjax('POST', $(`#${e.target.id}`).attr("action"), $(`#${e.target.id}`).serialize(), function() {
+    sendAjax('POST', $(`#${e.target.parentElement.id}`).attr("action"), $(`#${e.target.parentElement.id}`).serialize(), function() {
         loadProductsFromServer(csrfToken);
     });
     return false;
@@ -32,13 +31,13 @@ const ProductList = function(props) {
                     <form
                     id={product._id}
                     name="saveForm"
-                    onSubmit = {saveProduct}
+                    onClick = {saveProduct}
                     action="/saver"
                     method="POST"
                     className="saveFavorite">
                     <input type="hidden" name="_csrf" value={props.csrf} />
                     <input type="hidden" name="_id" value={product._id} />
-                    <a href="/browse" onclick="return false;" className="favBtn">Favorite<input className="saveFavoriteSubmit" type="submit" value=""/></a>
+                    <a href="/browse" onclick="return false;" className="favBtn">Favorite</a>
                     {/* <input className="saveFavoriteSubmit" type="submit" value=""/> */}
                     </form>   
                 </div>
@@ -64,7 +63,7 @@ const loadProductsFromServer = (csrf) => {
 const loadProductsByTag = (csrf, tag) => {
     //HELP CAN'T PASS TAG TO FUNCTION THAT NEEDS IT!
     const searchTerm = tag;
-    sendAjax('GET', '/getProductsByTag', null, (data, searchTerm) => {
+    sendAjax('GET', '/getProductsByTag', {tag}, (data, searchTerm) => {
         ReactDOM.render(
             <ProductList products={data.products} csrf={csrf} />, document.querySelector("#products")
         );

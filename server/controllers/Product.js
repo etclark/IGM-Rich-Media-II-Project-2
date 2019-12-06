@@ -52,10 +52,10 @@ const getProducts = (request, response) => {
 };
 
 //BROKEN
-const getProductsByTag = (request, response, tag) => {
-  // const req = request
+const getProductsByTag = (request, response) => {
+  const req = request
   const res = response;
-  const searchTerm = tag;
+  const searchTerm = req.query.tag;
   console.log(searchTerm);
 
   return Product.ProductModel.find({tag: searchTerm}, (err, docs) => {

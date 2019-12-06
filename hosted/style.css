@@ -104,9 +104,9 @@ html, body {
 }
 
 #products {
-    width: 75%;
-    min-width: 400px;
-    margin: 0 auto;
+    width: 50%;
+    min-width: 800px;
+    margin: auto;
 }
 
 h3.emptyProduct {
@@ -393,8 +393,8 @@ nav{
     100%{transform: translateY(-20px) scaleY(0.5);opacity: 0;}
   }
 
-  .saveFavoriteSubmit{
+  /* .saveFavoriteSubmit{
     color: transparent;
     background-color: transparent;
     border-color: transparent;
-  }
+  } */

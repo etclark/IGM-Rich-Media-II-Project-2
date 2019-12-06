@@ -4,8 +4,7 @@ var csrfToken = void 0;
 
 var saveProduct = function saveProduct(e) {
     e.preventDefault();
-    //console.dir($(`#${e.target.id}`));
-    sendAjax('POST', $("#" + e.target.id).attr("action"), $("#" + e.target.id).serialize(), function () {
+    sendAjax('POST', $("#" + e.target.parentElement.id).attr("action"), $("#" + e.target.parentElement.id).serialize(), function () {
         loadProductsFromServer(csrfToken);
     });
     return false;
@@ -64,7 +63,7 @@ var ProductList = function ProductList(props) {
                     {
                         id: product._id,
                         name: "saveForm",
-                        onSubmit: saveProduct,
+                        onClick: saveProduct,
                         action: "/saver",
                         method: "POST",
                         className: "saveFavorite" },
@@ -73,8 +72,7 @@ var ProductList = function ProductList(props) {
                     React.createElement(
                         "a",
                         { href: "/browse", onclick: "return false;", className: "favBtn" },
-                        "Favorite",
-                        React.createElement("input", { className: "saveFavoriteSubmit", type: "submit", value: "" })
+                        "Favorite"
                     )
                 )
             )
@@ -97,7 +95,7 @@ var loadProductsFromServer = function loadProductsFromServer(csrf) {
 var loadProductsByTag = function loadProductsByTag(csrf, tag) {
     //HELP CAN'T PASS TAG TO FUNCTION THAT NEEDS IT!
     var searchTerm = tag;
-    sendAjax('GET', '/getProductsByTag', null, function (data, searchTerm) {
+    sendAjax('GET', '/getProductsByTag', { tag: tag }, function (data, searchTerm) {
         ReactDOM.render(React.createElement(ProductList, { products: data.products, csrf: csrf }), document.querySelector("#products"));
     });
 };
