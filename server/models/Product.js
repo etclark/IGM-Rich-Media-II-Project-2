@@ -52,7 +52,8 @@ ProductSchema.statics.findByOwner = (ownerID, callback) => {
     owner: convertID(ownerID),
   };
 
-  return ProductModel.find(search).select('name imageLink price saved referLink tag').exec(callback);
+  return ProductModel.find(search).select('name imageLink price saved referLink tag')
+  .exec(callback);
 };
 
 ProductModel = mongoose.model('Product', ProductSchema);

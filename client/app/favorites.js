@@ -23,7 +23,7 @@ const handlePasswordChange = (e) => {
 const deleteProduct = (e) => {
     e.preventDefault();
     //console.dir(e.target.id)
-    sendAjax('POST', $(`#${e.target.id}`).attr("action"), $(`#${e.target.id}`).serialize(), function() {
+    sendAjax('POST', $(`#${e.target.parentElement.id}`).attr("action"), $(`#${e.target.parentElement.id}`).serialize(), function() {
         loadFavoritesFromServer(csrfToken);
     });
     return false;
@@ -52,14 +52,13 @@ const FavoriteList = function(props) {
                 <form
                 id={product._id}
                 name="deleteForm"
-                onSubmit = {deleteProduct}
+                onClick = {deleteProduct}
                 action="/deleter"
                 method="POST"
-                className="deleteFavorite"
-                >
+                className="deleteFavorite">
                 <input type="hidden" name="_csrf" value={props.csrf} />
                 <input type="hidden" name="_id" value={product._id} />
-                <input className="deleteFavoriteSubmit" type="submit" value="Delete Favorite"/>
+                <a href="/favorites" onclick="return false;" className="delBtn">Remove</a>
                 </form>
                 </div>    
             </div>
@@ -108,6 +107,9 @@ const loadFavoritesFromServer = (csrf) => {
 };
 
 const setupFavorites = (csrf) => {
+    const sortNav = document.querySelector("#sortNav");
+    sortNav.style.display = "none";
+
     ReactDOM.render(
         <FavoriteList products={[]} csrf={csrf} />, document.querySelector("#products")
     );   

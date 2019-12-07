@@ -138,7 +138,7 @@ h2.productName {
     border-radius: 5%;
 	padding: 6px;
 	line-height: 0;
-	background-image: url('http://johnallisonpublichouse.com/wp-content/uploads/2018/09/black-gradient-b9.jpg');
+	background-image: url('/assets/img/black-gradient.png');
 	background-size: 100%; /* Adjust the scale of your border image */
 }
 
@@ -167,7 +167,7 @@ h4.productPrice {
     text-align: center;
     display: block;
     width: 25%;
-    height: 50%;
+    height: 60%;
     min-width: 100px;;
     background-color: #953734;
     border: 2px groove #632423;
@@ -345,7 +345,53 @@ nav{
   .navlink:hover {
     transition: background-color 0.8s ease;
     background-color: #d99694;
-    text-decoration: underline;
+  }
+
+  /* SORTING NAV */
+  #sortNav{
+    position: fixed; /* Set the navbar to fixed position */
+    top: 200; /* Position the navbar at the top of the page */
+    left: 10;
+    width: 20%;
+    text-align: center;
+  }
+
+  .sortNavHeader{
+    color: #632423;
+  }
+
+  .sortLink{
+    width: 100%;
+    background-color: #953734;
+    text-decoration: none;
+    text-align: center;
+    margin: 0.3em;
+    border-radius: 4px;
+  }
+
+  .sortLink:hover {
+    cursor: pointer;
+    transition: background-color 0.4s ease;
+    background-color: #d99694;
+  }
+
+  .sortText{
+    background-color: transparent;
+    font-weight: bold;
+    color: #f1f1f1;
+    padding: 0.5em;
+    width:75%;
+    border: none;
+  }
+
+  .sortText:hover {
+    cursor: pointer;
+  }
+
+  .sortIcon{
+      width: 20px;
+      height: 20px;
+      margin-top: 5px;
   }
 
   /* FAVORITE BUTTON */
@@ -387,14 +433,43 @@ nav{
     right: 0px;
   }
 
+  .delBtn {
+    color: #f1f1f1;
+    padding-right: 0;
+    background-color: #632423;
+    -webkit-clip-path: polygon(0% 0%, 100% 0, 100% 70%, 90% 100%, 0% 100%);
+    clip-path: polygon(0 0, 100% 0, 100% 50%, 75% 100%, 0 100%);
+    padding: 7px;
+    margin-top: 10px;
+    font-weight: 700;
+    font-size: 1rem;
+    text-decoration: none;
+    text-align: center;
+    transition: all .5s ease; 
+  }
+  
+  .delBtn:hover { 
+    -webkit-clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 100% 100%, 0 100%);  
+  }
+  
+  .delBtn:after {
+    content: "\f014";
+    color: #e74c3c;
+    font-family: FontAwesome;
+    display: inline-block;
+    position: relative;
+    right: -55px;
+    transition: all 0.2s ease;
+  }
+  
+  .delBtn:hover:after {
+    margin: -5px 15px;
+    right: 0px;
+  }
+
   @keyframes anim1 {
     0%{transform: scaleY(0.5);opacity: 0;}
     50%{transform: translateY(-10px) scaleY(1.4); opacity: 1;}
     100%{transform: translateY(-20px) scaleY(0.5);opacity: 0;}
   }
-
-  /* .saveFavoriteSubmit{
-    color: transparent;
-    background-color: transparent;
-    border-color: transparent;
-  } */

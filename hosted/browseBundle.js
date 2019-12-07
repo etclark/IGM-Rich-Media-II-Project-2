@@ -93,15 +93,15 @@ var loadProductsFromServer = function loadProductsFromServer(csrf) {
 };
 
 var loadProductsByTag = function loadProductsByTag(csrf, tag) {
-    //HELP CAN'T PASS TAG TO FUNCTION THAT NEEDS IT!
-    var searchTerm = tag;
-    sendAjax('GET', '/getProductsByTag', { tag: tag }, function (data, searchTerm) {
+    sendAjax('GET', '/getProductsByTag', { tag: tag }, function (data) {
         ReactDOM.render(React.createElement(ProductList, { products: data.products, csrf: csrf }), document.querySelector("#products"));
     });
 };
 
 var setupProducts = function setupProducts(csrf) {
     var changePassLink = document.querySelector("#changePassLink");
+    var sortNav = document.querySelector("#sortNav");
+    sortNav.style.display = "block";
 
     changePassLink.addEventListener("click", function (e) {
         e.preventDefault();
@@ -124,6 +124,11 @@ var browseButton = document.querySelector("#browseLink");
 browseButton.addEventListener("click", getProductToken);
 
 //Sorting Buttons
+var allButton = document.querySelector("#allButton");
+allButton.addEventListener("click", function () {
+    loadProductsFromServer(csrfToken);
+});
+
 var pokemonButton = document.querySelector("#pokemonButton");
 pokemonButton.addEventListener("click", function () {
     loadProductsByTag(csrfToken, "pokemon");

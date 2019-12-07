@@ -16,13 +16,13 @@ const getFavorites = (request, response) => {
   const req = request;
   const res = response;
 
-  return Account.AccountModel.findByUsername(req.session.account.username , (err, doc) => {
-       if (err) {
-         console.log(err);
-         return res.status(400).json({ error: 'An error occured' });
-       }
-       return res.json({ products: doc.products });
-     });
+  return Account.AccountModel.findByUsername(req.session.account.username, (err, doc) => {
+    if (err) {
+      console.log(err);
+      return res.status(400).json({ error: 'An error occured' });
+    }
+    return res.json({ products: doc.products });
+  });
 };
 
 const productsPage = (request, response) => {
@@ -51,14 +51,12 @@ const getProducts = (request, response) => {
   });
 };
 
-//BROKEN
 const getProductsByTag = (request, response) => {
-  const req = request
+  const req = request;
   const res = response;
   const searchTerm = req.query.tag;
-  console.log(searchTerm);
 
-  return Product.ProductModel.find({tag: searchTerm}, (err, docs) => {
+  return Product.ProductModel.find({ tag: searchTerm }, (err, docs) => {
     if (err) {
       console.log(err);
       return res.status(400).json({ error: 'An error occured' });
@@ -74,11 +72,11 @@ const deleteProduct = (request, response) => {
   Product.ProductModel.findById(req.body._id, (err, result) => {
     const product = result._doc;
     Account.AccountModel.findOneAndUpdate(
-      {username: req.session.account.username},
-      {$pull: {products: {_id: product._id}}},
+      { username: req.session.account.username },
+      { $pull: { products: { _id: product._id } } },
       (error) => {
-        if(error){
-            return res.status(400).json({ error: 'An error occured' });
+        if (error) {
+          return res.status(400).json({ error: 'An error occured' });
         }
         return res.status(200).json({ complete: 'Deletion complete' });
       }
@@ -93,15 +91,15 @@ const saveProduct = (request, response) => {
   // Find product to be saved
   Product.ProductModel.findById(req.body._id, (err, result) => {
     const product = result;
-    
+
     Account.AccountModel.findOneAndUpdate(
-      {username: req.session.account.username},
-      {$push: {products: product}},
-      (err) => {
-        if(err){
-          return res.status(400).json({error: 'There was an error saving this favorite'});
+      { username: req.session.account.username },
+      { $push: { products: product } },
+      (error) => {
+        if (error) {
+          return res.status(400).json({ error: 'There was an error saving this favorite' });
         }
-        return res.json({redirect: '/favorites'});
+        return res.json({ redirect: '/favorites' });
       }
     );
   });

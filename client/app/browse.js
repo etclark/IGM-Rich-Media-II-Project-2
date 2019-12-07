@@ -38,7 +38,6 @@ const ProductList = function(props) {
                     <input type="hidden" name="_csrf" value={props.csrf} />
                     <input type="hidden" name="_id" value={product._id} />
                     <a href="/browse" onclick="return false;" className="favBtn">Favorite</a>
-                    {/* <input className="saveFavoriteSubmit" type="submit" value=""/> */}
                     </form>   
                 </div>
             </div>
@@ -61,9 +60,7 @@ const loadProductsFromServer = (csrf) => {
 };
 
 const loadProductsByTag = (csrf, tag) => {
-    //HELP CAN'T PASS TAG TO FUNCTION THAT NEEDS IT!
-    const searchTerm = tag;
-    sendAjax('GET', '/getProductsByTag', {tag}, (data, searchTerm) => {
+    sendAjax('GET', '/getProductsByTag', {tag}, (data) => {
         ReactDOM.render(
             <ProductList products={data.products} csrf={csrf} />, document.querySelector("#products")
         );
@@ -72,6 +69,8 @@ const loadProductsByTag = (csrf, tag) => {
 
 const setupProducts = (csrf) => {
     const changePassLink = document.querySelector("#changePassLink");
+    const sortNav = document.querySelector("#sortNav");
+    sortNav.style.display = "block";
    
     changePassLink.addEventListener("click", (e) => {
         e.preventDefault();
@@ -96,6 +95,11 @@ var browseButton = document.querySelector("#browseLink");
 browseButton.addEventListener("click", getProductToken);
 
 //Sorting Buttons
+var allButton = document.querySelector("#allButton");
+allButton.addEventListener("click", function(){
+    loadProductsFromServer(csrfToken);
+});
+
 var pokemonButton = document.querySelector("#pokemonButton");
 pokemonButton.addEventListener("click", function(){
     loadProductsByTag(csrfToken, "pokemon");

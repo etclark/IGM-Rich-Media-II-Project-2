@@ -25,7 +25,7 @@ var handlePasswordChange = function handlePasswordChange(e) {
 var deleteProduct = function deleteProduct(e) {
     e.preventDefault();
     //console.dir(e.target.id)
-    sendAjax('POST', $("#" + e.target.id).attr("action"), $("#" + e.target.id).serialize(), function () {
+    sendAjax('POST', $("#" + e.target.parentElement.id).attr("action"), $("#" + e.target.parentElement.id).serialize(), function () {
         loadFavoritesFromServer(csrfToken);
     });
     return false;
@@ -84,14 +84,17 @@ var FavoriteList = function FavoriteList(props) {
                     {
                         id: product._id,
                         name: "deleteForm",
-                        onSubmit: deleteProduct,
+                        onClick: deleteProduct,
                         action: "/deleter",
                         method: "POST",
-                        className: "deleteFavorite"
-                    },
+                        className: "deleteFavorite" },
                     React.createElement("input", { type: "hidden", name: "_csrf", value: props.csrf }),
                     React.createElement("input", { type: "hidden", name: "_id", value: product._id }),
-                    React.createElement("input", { className: "deleteFavoriteSubmit", type: "submit", value: "Delete Favorite" })
+                    React.createElement(
+                        "a",
+                        { href: "/favorites", onclick: "return false;", className: "delBtn" },
+                        "Remove"
+                    )
                 )
             )
         );
@@ -154,6 +157,9 @@ var loadFavoritesFromServer = function loadFavoritesFromServer(csrf) {
 };
 
 var setupFavorites = function setupFavorites(csrf) {
+    var sortNav = document.querySelector("#sortNav");
+    sortNav.style.display = "none";
+
     ReactDOM.render(React.createElement(FavoriteList, { products: [], csrf: csrf }), document.querySelector("#products"));
     loadFavoritesFromServer(csrf);
 };
